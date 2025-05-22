@@ -99,10 +99,10 @@ export default function RegisteredScreen({ route, navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.navIcon}>🏠</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Contracts')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Contracts', {user})}>
           <Text style={styles.navIcon}>📄</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile', {user})}>
           <Text style={styles.navIcon}>👤</Text>
         </TouchableOpacity>
       </View>

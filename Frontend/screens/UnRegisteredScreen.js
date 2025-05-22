@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 
 
 export default function UnRegisteredScreen({ navigation, route }) {
@@ -47,28 +47,17 @@ export default function UnRegisteredScreen({ navigation, route }) {
       </View>
       
       {/* Bottom navigation */}
-      <View style={styles.navBar}>
-        <TouchableOpacity 
-          style={[styles.navButton, styles.activeNavButton]} 
-          onPress={() => {}}
-        >
-          <Ionicons name="home" size={24} color="#2962FF" />
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.navButton} 
-          onPress={() => navigation.navigate('Documents')}
-        >
-          <Ionicons name="document-text-outline" size={24} color="#757575" />
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.navButton} 
-          onPress={() => navigation.navigate('Profile')}
-        >
-          <Ionicons name="person-outline" size={24} color="#757575" />
-        </TouchableOpacity>
-      </View>
+            <View style={styles.navBar}>
+              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.navIcon}>🏠</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Contracts', {user})}>
+                <Text style={styles.navIcon}>📄</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile', {user})}>
+                <Text style={styles.navIcon}>👤</Text>
+              </TouchableOpacity>
+            </View>
     </SafeAreaView>
   );
 }
@@ -149,13 +138,17 @@ const styles = StyleSheet.create({
   navBar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 15,
+    paddingVertical: 10,
     borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: '#ccc',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
   },
-  navButton: {
-    alignItems: 'center',
-    flex: 1,
+  navIcon: {
+    fontSize: 26,
   },
   activeNavButton: {
     borderBottomWidth: 2,
@@ -164,4 +157,22 @@ const styles = StyleSheet.create({
   navIcon: {
     fontSize: 24,
   },
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#3366FF', // hoặc '#2979FF'
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+},
+
+backButton: {
+  marginRight: 12,
+},
+
+headerText: {
+  fontSize: 18,
+  color: '#fff',
+  fontWeight: 'bold',
+},
+
 });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, ActivityIndicator,TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 import Icon from 'react-native-vector-icons/Feather';
-
 
 export default function ContractDetailScreen({ navigation, route }) {
   const { contract } = route.params;
@@ -19,6 +19,12 @@ export default function ContractDetailScreen({ navigation, route }) {
   });
   return (
     <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Xem Hợp đồng</Text>
+        </View>
           <View style={styles.body}>
       <Text style={styles.title}>Thông tin hợp đồng</Text>
       <View style={styles.card}>
@@ -141,4 +147,22 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#3366FF', // hoặc '#2979FF'
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+},
+
+backButton: {
+  marginRight: 12,
+},
+
+headerText: {
+  fontSize: 18,
+  color: '#fff',
+  fontWeight: 'bold',
+},
+
 });

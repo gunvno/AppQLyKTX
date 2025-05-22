@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { getUserNotRegisteredById } from '../api/api';
-import { Checkbox, Provider as PaperProvider } from 'react-native-paper'; // ✅ Dùng từ react-native-paper
+import { Checkbox, Provider as PaperProvider } from 'react-native-paper'; 
+import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 
 export default function DormRegisterScreen({ route, navigation }) {
   const { user } = route.params;
@@ -80,7 +81,14 @@ export default function DormRegisterScreen({ route, navigation }) {
   }
 
   return (
+    
     <PaperProvider>
+                  <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Trang chủ</Text>
+        </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.sectionTitle}>THÔNG TIN SINH VIÊN</Text>
         <View style={styles.infoBox}>
@@ -238,4 +246,22 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#3366FF', // hoặc '#2979FF'
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+},
+
+backButton: {
+  marginRight: 12,
+},
+
+headerText: {
+  fontSize: 18,
+  color: '#fff',
+  fontWeight: 'bold',
+},
+
 });

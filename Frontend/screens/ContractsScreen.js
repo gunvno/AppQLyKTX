@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { getContractByUser } from '../api/api';
+import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 
 export default function ContractsScreen({ navigation, route }) {
   const { user } = route.params;
@@ -78,8 +79,11 @@ export default function ContractsScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>📄 Hợp đồng</Text>
-      </View>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Hợp đồng</Text>
+        </View>
       <FlatList
         data={listContract}
         keyExtractor={(item) => item.id}
@@ -92,9 +96,11 @@ export default function ContractsScreen({ navigation, route }) {
 // ===================== STYLE =====================
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 40,
     flex: 1,
     backgroundColor: '#fff',
-    padding: 16,
+
+    justifyContent: 'space-between',
   },
   header: {
     paddingVertical: 12,
@@ -114,6 +120,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+    paddingHorizontal: 16,
   },
   contractText: {
     flex: 1,
@@ -133,4 +140,21 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 4,
   },
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#3366FF', // hoặc '#2979FF'
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+},
+
+backButton: {
+  marginRight: 12,
+},
+
+headerText: {
+  fontSize: 18,
+  color: '#fff',
+  fontWeight: 'bold',
+},
 });

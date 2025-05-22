@@ -8,14 +8,14 @@ exports.getAllUsers = (callback) => {
 // Kiểm tra đăng nhập
 exports.loginUser = (email, password, callback) => {
   db.query(
-    'SELECT TenDangNhap, Password, Role, Username, NgaySinh, Cccd, GioiTinh, Sdt, Email, DiaChi, Lop, Nganh FROM user WHERE TenDangNhap = ? AND Password = ?',
+    'SELECT TenDangNhap, Password, Role, Username, NgaySinh, Cccd, GioiTinh, Sdt, Email, DiaChi, Lop, Nganh,Anh  FROM user WHERE TenDangNhap = ? AND Password = ?',
     [email, password],
     callback
   );
 };
 exports.getUserById = (id, callback) => {
   db.query(
-    'SELECT hd.MaHD, hd.TenDangNhap, u.Username AS HoTen, u.Email, u.Sdt, u.Lop, u.Nganh, hd.MaPhong, p.Tang, p.LoaiPhong, p.Succhua, p.GiaPhong, hd.MaKy, hd.NgayDangKy, hd.NgayBatDau, hd.NgayKetThuc, hd.TienPhong, hd.TrangThai ' +
+    'SELECT hd.MaHD, hd.TenDangNhap, u.Username AS HoTen, u.Email, u.Sdt, u.Lop, u.Nganh, hd.MaPhong, p.Tang, p.LoaiPhong, p.Succhua, p.GiaPhong, hd.MaKy, hd.NgayDangKy, hd.NgayBatDau, hd.NgayKetThuc, hd.TienPhong, hd.TrangThai, u.Anh ' +
     'FROM HopDong hd ' +
     'JOIN `User` u ON hd.TenDangNhap = u.TenDangNhap ' +
     'JOIN Phong p ON hd.MaPhong = p.MaPhong ' +
@@ -26,7 +26,7 @@ exports.getUserById = (id, callback) => {
 };
 exports.getUserNotRegisteredById = (id, callback) => {
   db.query(
-    'SELECT TenDangNhap, Username, NgaySinh, Cccd, GioiTinh, Sdt, Email, DiaChi, Lop, Nganh FROM user WHERE TenDangNhap = ?',
+    'SELECT Role, TenDangNhap, Username, NgaySinh, Cccd, GioiTinh, Sdt, Email, DiaChi, Lop, Nganh, Anh FROM user WHERE TenDangNhap = ?',
     [id],
     callback
   );

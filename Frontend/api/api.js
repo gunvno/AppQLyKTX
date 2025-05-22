@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.2.4:3000';  // <-- Đổi IP máy bạn
+const BASE_URL = 'http://192.168.2.5:3000';  // <-- Đổi IP máy bạn
 
 export const login = async (TenDangNhap, Password) => {
   const response = await fetch(`${BASE_URL}/auth/login`, {
