@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     flexGrow: 1,
-    marginTop: 20,
+    marginTop: 0,
   },
   sectionTitle: {
     fontSize: 18,
@@ -250,8 +250,8 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: '#3366FF', // hoặc '#2979FF'
-  paddingVertical: 12,
-  paddingHorizontal: 16,
+    paddingVertical: 15,
+    marginTop: 40,
 },
 
 backButton: {
