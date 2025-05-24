@@ -11,11 +11,8 @@ export default function LoginScreen({ navigation }) {
   const handleLogin = async () => {
     try {
       const res = await login(TenDangNhap, Password);
-      console.log('Kết quả từ API:', res); // Thêm dòng này
       if (res.success) {
         const user = res.user;
-        console.log('Thông tin người dùng:', user);
-  
         // Kiểm tra role và điều hướng
         if (String(user.Role) === '0') {
           // Người dùng chưa đăng ký

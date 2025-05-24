@@ -4,6 +4,7 @@ import { Ionicons, Feather, AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { getUserNotRegisteredById } from '../api/api';
 import { Alert } from 'react-native'; 
 import { useEffect, useState } from 'react';
+import {  Linking } from 'react-native';
 
 export default function ProfileScreen({navigation,  route }) {
   const { user } = route.params;
@@ -16,7 +17,7 @@ export default function ProfileScreen({navigation,  route }) {
             const res = await getUserNotRegisteredById(user.TenDangNhap);
             console.log('API response:', res);
             if (res.success) {
-              setUserData(res.user[0]);
+              setUserData(res.user);
             } else {
               Alert.alert('Lỗi', res.message || 'Không thể lấy thông tin người dùng');
             }
@@ -55,6 +56,25 @@ export default function ProfileScreen({navigation,  route }) {
           Alert.alert('Lỗi server', 'Không thể kết nối đến server');
         }
       };
+      const handleCall = () => {
+  Alert.alert(
+    'Liên hệ quản lý',
+    'Gọi tới số điện thoại: 098374729',
+    [
+      {
+        text: 'Hủy bỏ',
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        onPress: () => {
+          Linking.openURL('tel:098374729');
+        },
+      },
+    ],
+    { cancelable: false }
+  );
+};
 if (loading || !userData) {
   return (
     <View style={styles.container}>
@@ -76,12 +96,12 @@ console.log('Thông tin người dùng:', userData);
 
     <View style={styles.userInfoCard}>
       <Image 
-        source={{ uri: 'https://example.com/avatar.jpg' }} // Thay thế bằng URL ảnh thật
+        source={{ uri: 'userData.Anh' }} // Thay thế bằng URL ảnh thật
         style={styles.avatar}
       />
       <View style={styles.userInfo}>
         <Text style={styles.userName}>{userData.Username}</Text>
-        <Text style={styles.userPhone}>0356/25208</Text>
+        <Text style={styles.userPhone}>{userData.Sdt}</Text>
         <View style={styles.verificationBadge}>
           <Text style={styles.verificationText}>Đã xác nhận</Text>
         </View>
@@ -99,7 +119,7 @@ console.log('Thông tin người dùng:', userData);
         </View>
     </TouchableOpacity>
 
-    <TouchableOpacity style={styles.menuItem}>
+    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ChangePassword', { user })}>
         <View style={styles.menuIconContainer}>
         <Feather name="lock" size={24} color="#2196F3" />
         </View>
@@ -109,7 +129,7 @@ console.log('Thông tin người dùng:', userData);
         </View>
     </TouchableOpacity>
 
-    <TouchableOpacity style={styles.menuItem}>
+    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Settings', { user })}>
         <View style={styles.menuIconContainer}>
         <Ionicons name="settings-outline" size={24} color="#FFC107" />
         </View>
@@ -119,25 +139,52 @@ console.log('Thông tin người dùng:', userData);
         </View>
     </TouchableOpacity>
 
-    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
-        <View style={styles.menuIconContainer}>
-        <AntDesign name="logout" size={24} color="#4CAF50" />
-        </View>
-        <Text style={styles.menuTitle}>Đăng xuất</Text>
-        <View style={styles.menuRightIcon}>
-        <Ionicons name="chevron-forward" size={20} color="#999" />
-        </View>
-    </TouchableOpacity>
+    <TouchableOpacity
+  style={styles.menuItem}
+  onPress={() => {
+    Alert.alert(
+      'Đăng xuất',
+      'Bạn chắc chắn muốn đăng xuất?',
+      [
+        {
+          text: 'Hủy bỏ',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: () => {
+            navigation.navigate('Login');
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }}
+>
+  <View style={styles.menuIconContainer}>
+    <AntDesign name="logout" size={24} color="#4CAF50" />
+  </View>
+  <Text style={styles.menuTitle}>Đăng xuất</Text>
+  <View style={styles.menuRightIcon}>
+    <Ionicons name="chevron-forward" size={20} color="#999" />
+  </View>
+</TouchableOpacity>
 
-    <TouchableOpacity style={[styles.menuItem, styles.menuItemLast]}>
-        <View style={styles.menuIconContainer}>
+
+<TouchableOpacity
+  style={styles.menuItem}
+  onPress={handleCall}
+>
+  <View style={styles.menuIconContainer}>
         <MaterialIcons name="support-agent" size={24} color="#9C27B0" />
-        </View>
-        <Text style={styles.menuTitle}>Liên hệ ban quản lý</Text>
-        <View style={styles.menuRightIcon}>
-        <Ionicons name="chevron-forward" size={20} color="#999" />
-        </View>
-    </TouchableOpacity>
+  </View>
+  <Text style={styles.menuTitle}>Liên hệ bạn quản lý</Text>
+  <View style={styles.menuRightIcon}>
+    <Ionicons name="chevron-forward" size={20} color="#999" />
+  </View>
+</TouchableOpacity>
+
+
     </View>
   </View>
 

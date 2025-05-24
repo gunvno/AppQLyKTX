@@ -53,4 +53,11 @@ exports.getContractByContractId = (id, callback) => {
     callback
   );
 }
+exports.updatePassword = (id, newPassword, callback) => {
+  db.query(
+    'UPDATE user SET Password = ? WHERE TenDangNhap = ?',
+    [newPassword, id],
+    callback
+  );
+};
 

@@ -7,4 +7,5 @@ router.get('/getUserById/:id', userController.getUserById);
 router.get('/getUserNotRegisteredById/:id', userController.getUserNotRegisteredById);
 router.get('/getContractByUser/:id', userController.getContractByUser);
 router.get('/getContractByContractId/:id', userController.getContractByContractId);
+router.post('/updatePassword/:id', userController.updatePassword);
 module.exports = router;

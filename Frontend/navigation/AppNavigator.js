@@ -7,6 +7,8 @@ import DormRegisterScreen from '../screens/DormRegisterScreen';
 import ContractsScreen from '../screens/ContractsScreen';
 import ContractDetailScreen from '../screens/ContractDetail';
 import ProfileScreen from '../screens/ProfileScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -19,6 +21,8 @@ export default function AppNavigator() {
       <Stack.Screen name="Contracts" component={ContractsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="ContractDetail" component={ContractDetailScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
       {/* Add other screens here */}
     </Stack.Navigator>
   );

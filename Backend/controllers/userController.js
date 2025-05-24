@@ -27,7 +27,6 @@ exports.getUserById = (req, res) => {
 
 exports.getUserNotRegisteredById = (req, res) => {
   const { id } = req.params;
-  console.log('ID nhận được từ frontend:', id); // Log giá trị id để kiểm tra
 
   userModel.getUserNotRegisteredById(id, (err, result) => {
     if (err) {
@@ -72,6 +71,23 @@ exports.getContractByContractId = (req, res) => {
       res.status(200).json({ success: true, contracts: result });
     } else {
       res.status(404).json({ success: false, message: 'Không tìm thấy hợp đồng' });
+    }
+  });
+}
+exports.updatePassword = (req, res) => {
+  const { id } = req.params;
+  const { newPassword } = req.body;
+
+  userModel.updatePassword(id, newPassword, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi cập nhật mật khẩu:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ success: true, message: 'Cập nhật mật khẩu thành công' });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
     }
   });
 }
