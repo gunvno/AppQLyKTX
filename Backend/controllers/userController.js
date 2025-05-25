@@ -91,3 +91,19 @@ exports.updatePassword = (req, res) => {
     }
   });
 }
+exports.getRequestById = (req, res) => {
+  const { id } = req.params;
+
+  userModel.getRequestById(id, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi lấy thông tin yêu cầu:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ success: true, request: result[0] });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu' });
+    }
+  });
+}

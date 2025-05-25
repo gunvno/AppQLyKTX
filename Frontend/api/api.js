@@ -76,4 +76,14 @@ export const updatePassword = async (id, newPassword) => {
     throw error;
   }
 };
+export const getRequestById = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/getRequestById/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getRequestById:', error);
+    throw error;
+  }
+};
 export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, getContractByUser, getContractByContractId, updatePassword };

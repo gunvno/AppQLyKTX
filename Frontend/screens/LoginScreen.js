@@ -61,7 +61,7 @@ export default function LoginScreen({ navigation }) {
       </TouchableOpacity>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('#')}>
           <Text style={styles.buttonText}>Quay lại</Text>
         </TouchableOpacity>
 

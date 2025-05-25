@@ -17,7 +17,7 @@ export default function UnRegisteredScreen({ navigation, route }) {
       <View style={styles.topButtonsContainer}>
         <TouchableOpacity 
           style={styles.topButton} 
-          onPress={() => navigation.navigate('Contracts')}
+          onPress={() => navigation.navigate('Contracts', {user})}
         >
           <Ionicons name="document-text-outline" size={24} color="#2962FF" style={styles.topButtonIcon} />
           <Text style={styles.topButtonText}>Hợp đồng</Text>

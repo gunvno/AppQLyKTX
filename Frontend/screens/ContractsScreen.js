@@ -59,7 +59,7 @@ export default function ContractsScreen({ navigation, route }) {
 
     fetchUserData();
   }, [user.TenDangNhap]);
-
+  if (loading) return <View style={styles.container}><Text>Không có hợp đồng</Text></View>;
   const renderItem = ({ item }) => (
   console.log('Navigating with item:', item),
   <TouchableOpacity

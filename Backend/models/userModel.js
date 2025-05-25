@@ -60,4 +60,11 @@ exports.updatePassword = (id, newPassword, callback) => {
     callback
   );
 };
+exports.getRequestById = (id, callback) => {
+  db.query(
+    'SELECT * FROM YeuCau WHERE TenDangNhap = ?',
+    [id],
+    callback
+  );
+};
 
