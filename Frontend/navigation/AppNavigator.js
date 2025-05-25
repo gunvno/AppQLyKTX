@@ -9,6 +9,8 @@ import ContractDetailScreen from '../screens/ContractDetail';
 import ProfileScreen from '../screens/ProfileScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ProfileDetailScreen from '../screens/ProfileDetailScreen';
+import RequestScreen from '../screens/RequestScreen'; // Assuming you have a RequestScreen
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -23,6 +25,8 @@ export default function AppNavigator() {
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ProfileDetail" component={ProfileDetailScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Request" component={RequestScreen} options={{ headerShown: false }} />
       {/* Add other screens here */}
     </Stack.Navigator>
   );

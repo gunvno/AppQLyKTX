@@ -96,7 +96,7 @@ console.log('Thông tin người dùng:', userData);
 
     <View style={styles.userInfoCard}>
       <Image 
-        source={{ uri: 'userData.Anh' }} // Thay thế bằng URL ảnh thật
+        source={{ uri: userData.Anh }} // Thay thế bằng URL ảnh thật
         style={styles.avatar}
       />
       <View style={styles.userInfo}>
@@ -109,7 +109,7 @@ console.log('Thông tin người dùng:', userData);
     </View>
 
     <View style={styles.menuContainer}>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProfileDetail', { user: userData })}>
         <View style={styles.menuIconContainer}>
         <Ionicons name="person-outline" size={24} color="#FF5722" />
         </View>

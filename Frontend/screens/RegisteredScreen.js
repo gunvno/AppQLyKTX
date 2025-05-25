@@ -70,7 +70,7 @@ export default function RegisteredScreen({ route, navigation }) {
           <Text style={styles.icon}>📄</Text>
           <Text>Hợp đồng</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Requests')}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Request', {user})}>
           <Text style={styles.icon}>📝</Text>
           <Text>Yêu cầu</Text>
         </TouchableOpacity>

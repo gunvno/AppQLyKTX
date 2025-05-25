@@ -25,7 +25,7 @@ export default function UnRegisteredScreen({ navigation, route }) {
         
         <TouchableOpacity 
           style={styles.topButton} 
-          onPress={() => navigation.navigate('Requests')}
+          onPress={() => navigation.navigate('Request', { user })}
         >
           <Ionicons name="create-outline" size={24} color="#2962FF" style={styles.topButtonIcon} />
           <Text style={styles.topButtonText}>Yêu cầu</Text>
