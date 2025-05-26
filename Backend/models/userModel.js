@@ -15,7 +15,7 @@ exports.loginUser = (email, password, callback) => {
 };
 exports.getUserById = (id, callback) => {
   db.query(
-    'SELECT hd.MaHD, hd.TenDangNhap, u.Username AS HoTen, u.Email, u.Sdt, u.Lop, u.Nganh, hd.MaPhong, p.Tang, p.LoaiPhong, p.Succhua, p.GiaPhong, hd.MaKy, hd.NgayDangKy, hd.NgayBatDau, hd.NgayKetThuc, hd.TienPhong, hd.TrangThai, u.Anh ' +
+    'SELECT hd.MaHD, hd.TenDangNhap, u.Username AS HoTen, u.Email, u.Sdt, u.Lop, u.Nganh, hd.MaPhong, p.Tang, p.LoaiPhong, p.Succhua, p.GiaPhong, hd.MaKy, hd.NgayDangKy, hd.NgayBatDau, hd.NgayKetThuc, hd.TienPhong, hd.TrangThai, u.Anh, u.Role ' +
     'FROM HopDong hd ' +
     'JOIN `User` u ON hd.TenDangNhap = u.TenDangNhap ' +
     'JOIN Phong p ON hd.MaPhong = p.MaPhong ' +
@@ -111,6 +111,12 @@ exports.updateRole1 = (TenDangNhap, callback) => {
     [TenDangNhap], callback
   );
 } 
+exports.updateRole0 = (TenDangNhap, callback) => {
+  db.query(
+    'UPDATE user SET Role = 0 WHERE TenDangNhap = ?',
+    [TenDangNhap], callback
+  );
+}
 exports.getRoomById = (id, callback) => {
   db.query(
     'SELECT * FROM Phong WHERE MaPhong = ?',
@@ -118,6 +124,12 @@ exports.getRoomById = (id, callback) => {
     callback
   );
 }
-
+exports.updateTrangThaiHuyHopDong = (MaHD, callback) => {
+  db.query(
+    'UPDATE HopDong SET TrangThai = ? WHERE MaHD = ?',
+    ["Hết hạn", MaHD],
+    callback
+  );
+}
 
 

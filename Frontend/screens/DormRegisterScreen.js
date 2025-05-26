@@ -11,6 +11,7 @@ import { Picker } from '@react-native-picker/picker';
 import { getUserNotRegisteredById, getRoomByFloor, getMaKyByHocKyVaNamBatDau, updateRole1, insertHopDong, getRoomById } from '../api/api';
 import { Checkbox, Provider as PaperProvider } from 'react-native-paper'; 
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
+import moment from 'moment';
 
 export default function DormRegisterScreen({ route, navigation }) {
   const { user } = route.params;
@@ -146,7 +147,7 @@ const getMonthFromDate = (dateStr) => {
     const thangKetThuc = getMonthFromDate(end);
     const maKy = await getMaKy();
     const phong = await getRoomById1(maPhong);
-    console.log('Lỗi:', phong.TienPhong);
+    console.log('Lỗi:', phong.GiaPhong);
     if (!maKy) return;
   
     // Gọi API insertHopDong
@@ -158,7 +159,7 @@ const getMonthFromDate = (dateStr) => {
         NgayDangKy: ngayDangKy,
         NgayBatDau: start,
         NgayKetThuc: end,
-        TienPhong: phong.TienPhong // Thay bằng giá trị thực tế nếu có
+        TienPhong: phong.GiaPhong // Thay bằng giá trị thực tế nếu có
       });
       if (res.success) {
         // Sau khi đăng ký thành công, gọi updateRole1
@@ -214,7 +215,7 @@ const getMonthFromDate = (dateStr) => {
           <Text>Lớp: {studentInfo.Lop}</Text>
           <Text>MSSV: {studentInfo.TenDangNhap}</Text>
           <Text>Giới tính: {studentInfo.GioiTinh}</Text>
-          <Text>Ngày sinh: {studentInfo.NgaySinh}</Text>
+          <Text>Ngày sinh: { moment(studentInfo.NgaySinh).format('DD/MM/YYYY')}</Text>
           <Text>Nơi sinh: {studentInfo.DiaChi}</Text>
           <Text>Ngành: {studentInfo.Nganh}</Text>
         </View>

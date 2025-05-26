@@ -26,4 +26,6 @@ router.get('/getMaKyByHocKyVaNamBatDau/:HocKy/:NamBatDau', userController.getMaK
 router.post('/insertHopDong', userController.insertHopDong);
 router.post('/updateRole1/:TenDangNhap', userController.updateRole1);
 router.get('/getRoomById/:id', userController.getRoomById);
+router.post('/updateTrangThaiHuyHopDong/:MaHD', userController.updateTrangThaiHuyHopDong);
+router.post('/updateRole0/:TenDangNhap', userController.updateRole0);
 module.exports = router;

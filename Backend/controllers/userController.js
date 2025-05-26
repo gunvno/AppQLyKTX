@@ -209,3 +209,35 @@ exports.getRoomById = (req, res) => {
     }
   });
 }
+exports.updateTrangThaiHuyHopDong = (req, res) => {
+  const { MaHD } = req.params;
+
+  userModel.updateTrangThaiHuyHopDong(MaHD, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi cập nhật trạng thái hợp đồng:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ success: true, message: 'Cập nhật trạng thái hợp đồng thành công' });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+  });
+}
+exports.updateRole0 = (req, res) => {
+  const { TenDangNhap } = req.params;
+
+  userModel.updateRole0(TenDangNhap, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi cập nhật vai trò:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ success: true, message: 'Cập nhật vai trò thành công' });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+  });
+}

@@ -158,4 +158,33 @@ export const getRoomById = async (id) => {
     throw error;
   }
 }
-export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById };
+export const updateTrangThaiHuyHopDong = async (MaHD) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/updateTrangThaiHuyHopDong/${MaHD}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API updateTrangThaiHuyHopDong:', error);
+    throw error;
+  }
+}
+export const updateRole0 = async (TenDangNhap) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/updateRole0/${TenDangNhap}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API updateRole0:', error);
+    throw error;
+  }
+};
+export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, 
+  getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,
+  getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById,
+  updateTrangThaiHuyHopDong, updateRole0 };

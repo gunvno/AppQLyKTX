@@ -2,9 +2,49 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, ActivityIndicator,TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 import Icon from 'react-native-vector-icons/Feather';
+import { updateTrangThaiHuyHopDong } from '../api/api'; // Giả sử bạn có hàm này trong api.js
+import { updateRole0 } from '../api/api'; // Giả sử bạn có hàm này trong api.js
 
 export default function ContractDetailScreen({ navigation, route }) {
   const { contract } = route.params;
+  const { user }  = route.params; // Nhận thông tin người dùng từ route.params
+  const huyHopDong = async () => {
+    try {
+      const res = await updateTrangThaiHuyHopDong(contract.id);
+      if (res.success) {
+        Alert.alert('Thành công', 'Hợp đồng đã được hủy thành công');
+        const res1 = await updateRole0(contract.TenDangNhap);
+        const updatedUser = { ...user, Role: '0' };
+        navigation.navigate('Contracts', { user: updatedUser });
+      } else {
+        Alert.alert('Lỗi', res.message || 'Không thể hủy hợp đồng');
+      }
+    }
+    catch (error) {
+      console.error('Lỗi hủy hợp đồng:', error);
+      Alert.alert('Lỗi', 'Không thể hủy hợp đồng');
+      return null;
+    }
+  };
+  const handleCall = () => {
+    Alert.alert(
+      'Hợp đồng',
+      'Bạn có muốn hủy hợp đồng',
+      [
+        {
+          text: 'Hủy bỏ',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: () => {
+            huyHopDong();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
   console.log('Contract received in ContractDetailScreen:', contract);
   const NgayBatDau = new Date(contract.startdate).toLocaleDateString('vi-VN', {
     day: '2-digit',
@@ -42,7 +82,7 @@ export default function ContractDetailScreen({ navigation, route }) {
         </TouchableOpacity>
         </View>
         <View style={styles.bottomButtons}>
-        <TouchableOpacity style={styles.cancelButton}>
+        <TouchableOpacity style={styles.cancelButton} onPress={handleCall}>
           <Text style={styles.cancelText}>Hủy hợp đồng</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.extendButton}>
@@ -59,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E3F2FD',
-    paddingTop: 20,
+    paddingTop: 40,
     platform: 'android' ? 20 : 0, // Adjust for iOS notch
   },
   header: {
