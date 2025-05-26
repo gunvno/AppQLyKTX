@@ -184,6 +184,16 @@ export const updateRole0 = async (TenDangNhap) => {
     throw error;
   }
 };
+export const getTotalPeopleByMaPhongAndTrangThaiHopDong = async (MaPhong) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/getTotalPeopleByMaPhongAndTrangThaiHopDong/${MaPhong}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getTotalPeopleByMaPhongAndTrangThaiHopDong:', error);
+    throw error;
+  }
+};
 export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, 
   getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,
   getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById,

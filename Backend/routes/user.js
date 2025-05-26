@@ -28,4 +28,5 @@ router.post('/updateRole1/:TenDangNhap', userController.updateRole1);
 router.get('/getRoomById/:id', userController.getRoomById);
 router.post('/updateTrangThaiHuyHopDong/:MaHD', userController.updateTrangThaiHuyHopDong);
 router.post('/updateRole0/:TenDangNhap', userController.updateRole0);
+router.get('/getTotalPeopleByMaPhongAndTrangThaiHopDong/:MaPhong', userController.getTotalPeopleByMaPhongAndTrangThaiHopDong);
 module.exports = router;

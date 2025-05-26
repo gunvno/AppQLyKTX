@@ -241,3 +241,19 @@ exports.updateRole0 = (req, res) => {
     }
   });
 }
+exports.getTotalPeopleByMaPhongAndTrangThaiHopDong = (req, res) => {
+  const { MaPhong } = req.params;
+
+  userModel.getTotalPeopleByMaPhongAndTrangThaiHopDong(MaPhong, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi lấy tổng số người:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ success: true, totalPeople: result[0].totalPeople });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy thông tin' });
+    }
+  });
+}

@@ -131,5 +131,12 @@ exports.updateTrangThaiHuyHopDong = (MaHD, callback) => {
     callback
   );
 }
+exports.getTotalPeopleByMaPhongAndTrangThaiHopDong = (MaPhong, callback) => {
+  db.query(
+    'SELECT COUNT(DISTINCT TenDangNhap) AS totalPeople FROM HopDong WHERE MaPhong = ? AND TrangThai = ?',
+    [MaPhong, "Đang có hiệu lực"],
+    callback
+  );
+};
 
 

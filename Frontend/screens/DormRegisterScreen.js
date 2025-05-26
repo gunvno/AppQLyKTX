@@ -22,10 +22,10 @@ export default function DormRegisterScreen({ route, navigation }) {
   const [registrationInfo, setRegistrationInfo] = useState({
     NgayDangKy: new Date().toLocaleDateString(),
     Nam: '2025',
-    Dot: 'HK2',
+    Dot: 'K2',
     ThoiGianDangKy: [],
     Tang: '1',
-    Phong: '108',
+    Phong: '101',
     DongY: false,
   });
   const getRoomById1 = async (maPhong) => {
@@ -118,18 +118,53 @@ export default function DormRegisterScreen({ route, navigation }) {
     };
     fetchRooms();
   }, [registrationInfo.Tang]);
-
-// Truyền vào chuỗi dạng 'dd/mm/yyyy', trả về số tháng (1-12)
-const getMonthFromDate = (dateStr) => {
-  if (!dateStr) return null;
-  const parts = dateStr.split('/');
-  if (parts.length < 2) return null;
-  let day = Number(parts[0]);
-  let month = Number(parts[1]);
-  // Nếu là ngày 31 và tháng 1 thì làm tròn lên tháng 2
-  if (day === 31 && month === 1) return 2;
-  return month;
-};
+  function toMySQLDate(dateStr) {
+    if (!dateStr) return '';
+    const [day, month, year] = dateStr.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  }
+  function toMySQLDateTime(dateStr) {
+  // Nếu có cả ngày và giờ (vd: "05/05/2025, 09:23:29")
+  if (dateStr.includes(',')) {
+    const [datePart, timePart] = dateStr.split(',').map(s => s.trim());
+    const [day, month, year] = datePart.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${timePart}`;
+  }
+  // Nếu chỉ có ngày (vd: "05/05/2025")
+  const [day, month, year] = dateStr.split('/');
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
+function toMySQLDateOnly(dateStr) {
+  if (!dateStr) return '';
+  let datePart = dateStr;
+  if (dateStr.includes(',')) {
+    datePart = dateStr.split(',')[0].trim();
+  } else if (dateStr.includes(' ')) {
+    datePart = dateStr.split(' ')[0].trim();
+  }
+  // datePart lúc này là mm/dd/yyyy hoặc dd/mm/yyyy
+  const [a, b, c] = datePart.split('/');
+  // Nếu tháng > 12 thì chắc chắn là dd/mm/yyyy, ngược lại là mm/dd/yyyy
+  let year, month, day;
+  if (Number(a) > 12) {
+    // dd/mm/yyyy
+    day = a;
+    month = b;
+    year = c;
+  } else if (Number(b) > 12) {
+    // mm/dd/yyyy
+    month = a;
+    day = b;
+    year = c;
+  } else {
+    // fallback: mặc định mm/dd/yyyy
+    month = a;
+    day = b;
+    year = c;
+  }
+  if (!day || !month || !year) return '';
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
 
   const handleRegister = async () => {
     if (!registrationInfo.DongY) {
@@ -140,42 +175,41 @@ const getMonthFromDate = (dateStr) => {
     // Lấy các giá trị cần thiết
     const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
     const maPhong = registrationInfo.Phong;
-    const hocKy = registrationInfo.Dot;
-    const nam = registrationInfo.Nam;
     const ngayDangKy = registrationInfo.NgayDangKy;
-    const thangBatDau = getMonthFromDate(start);
-    const thangKetThuc = getMonthFromDate(end);
     const maKy = await getMaKy();
     const phong = await getRoomById1(maPhong);
     console.log('Lỗi:', phong.GiaPhong);
     if (!maKy) return;
-  
+    const ngayDangKyMySQL = toMySQLDateOnly(ngayDangKy);
+    const startMySQL = toMySQLDate(start);
+    const endMySQL = toMySQLDate(end);
+    console.log('Giá trị ngày đăng ký gốc:', registrationInfo.NgayDangKy);
+    console.log('Sau khi chuyển:', ngayDangKyMySQL);
     // Gọi API insertHopDong
     try {
       const res = await insertHopDong({
         TenDangNhap: user.TenDangNhap,
         MaPhong: maPhong,
         MaKy: maKy,
-        NgayDangKy: ngayDangKy,
-        NgayBatDau: start,
-        NgayKetThuc: end,
+        NgayDangKy: ngayDangKyMySQL,
+        NgayBatDau: startMySQL,
+        NgayKetThuc: endMySQL,
         TienPhong: phong.GiaPhong // Thay bằng giá trị thực tế nếu có
       });
       if (res.success) {
-        // Sau khi đăng ký thành công, gọi updateRole1
-        try {
-          const resRole = await updateRole1(user.TenDangNhap);
-          if (resRole.success) {
-            Alert.alert('Đăng ký thành công', 'Vai trò đã được cập nhật!');
-          } else {
-            Alert.alert('Đăng ký thành công', 'Nhưng cập nhật vai trò thất bại!');
-          }
-        } catch (error) {
-          Alert.alert('Đăng ký thành công', 'Nhưng cập nhật vai trò thất bại!');
-        }
-      } else {
-        Alert.alert('Lỗi', res.message || 'Đăng ký hợp đồng thất bại!');
-      }
+  // Sau khi đăng ký thành công, gọi updateRole1
+  try {
+    const resRole = await updateRole1(user.TenDangNhap);
+    console.log('Cập nhật vai trò thành công:', resRole);
+    // Tạo user mới với Role = '1'
+    const updatedUser = { ...user, Role: '1' };
+    navigation.navigate('Registered', { user: updatedUser });
+  } catch (error) {
+    Alert.alert('Đăng ký thành công', 'Nhưng cập nhật vai trò thất bại!');
+  }
+} else {
+  Alert.alert('Lỗi', res.message || 'Đăng ký hợp đồng thất bại!');
+}
     } catch (error) {
       Alert.alert('Lỗi', 'Đăng ký hợp đồng thất bại!');
     }
