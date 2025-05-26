@@ -194,7 +194,21 @@ export const getTotalPeopleByMaPhongAndTrangThaiHopDong = async (MaPhong) => {
     throw error;
   }
 };
+export const setNgayKetThucHopDong = async (MaHD, NgayKetThuc) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/setNgayKetThucHopDong/:MaHD`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ MaHD, NgayKetThuc }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API setNgayKetThucHopDong:', error);
+    throw error;
+  }
+}
 export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, 
   getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,
   getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById,
-  updateTrangThaiHuyHopDong, updateRole0 };
+  updateTrangThaiHuyHopDong, updateRole0, getTotalPeopleByMaPhongAndTrangThaiHopDong, setNgayKetThucHopDong };

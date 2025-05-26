@@ -257,3 +257,20 @@ exports.getTotalPeopleByMaPhongAndTrangThaiHopDong = (req, res) => {
     }
   });
 }
+exports.setNgayKetThucHopDong = (req, res) => {
+  const { MaHD } = req.params;
+  const { NgayKetThuc } = req.body;
+
+  userModel.setNgayKetThucHopDong(MaHD, NgayKetThuc, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi cập nhật ngày kết thúc hợp đồng:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ success: true, message: 'Cập nhật ngày kết thúc hợp đồng thành công' });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy hợp đồng' });
+    }
+  });
+}

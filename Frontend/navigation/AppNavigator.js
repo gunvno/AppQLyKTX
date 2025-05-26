@@ -12,6 +12,9 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ProfileDetailScreen from '../screens/ProfileDetailScreen';
 import RequestScreen from '../screens/RequestScreen'; // Assuming you have a RequestScreen
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import ExtendContractScreen from '../screens/ExtendContractScreen';
+import FlashMessage from 'react-native-flash-message';
+
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -29,6 +32,7 @@ export default function AppNavigator() {
       <Stack.Screen name="ProfileDetail" component={ProfileDetailScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Request" component={RequestScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ExtendContract" component={ExtendContractScreen} options={{ headerShown: false }} />
       {/* Add other screens here */}
     </Stack.Navigator>
   );

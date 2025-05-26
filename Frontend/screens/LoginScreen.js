@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { login } from '../api/api';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // nhớ cài nếu chưa có: npm install react-native-vector-icons
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { showMessage } from 'react-native-flash-message';
 
 export default function LoginScreen({ navigation }) {
   const [TenDangNhap, setTenDangNhap] = useState('');
@@ -13,22 +14,31 @@ export default function LoginScreen({ navigation }) {
       const res = await login(TenDangNhap, Password);
       if (res.success) {
         const user = res.user;
-        // Kiểm tra role và điều hướng
         if (String(user.Role) === '0') {
-          // Người dùng chưa đăng ký
           navigation.navigate('UnRegistered', { user });
         } else if (String(user.Role) === '1') {
-          // Người dùng đã đăng ký
           navigation.navigate('Registered', { user });
         } else {
-          Alert.alert('Lỗi', 'Role không hợp lệ');
+          showMessage({
+            message: 'Lỗi',
+            description: 'Role không hợp lệ',
+            type: 'danger',
+          });
         }
       } else {
-        Alert.alert('Đăng nhập thất bại', res.message || 'Sai thông tin đăng nhập');
+        showMessage({
+          message: 'Đăng nhập thất bại',
+          description: res.message || 'Sai thông tin đăng nhập',
+          type: 'danger',
+        });
       }
     } catch (error) {
       console.error('Lỗi đăng nhập:', error);
-      Alert.alert('Lỗi server', 'Không thể kết nối đến server');
+      showMessage({
+        message: 'Lỗi server',
+        description: 'Không thể kết nối đến server',
+        type: 'danger',
+      });
     }
   };
 
@@ -40,7 +50,7 @@ export default function LoginScreen({ navigation }) {
         style={styles.input}
         placeholder="Nhập mã số sinh viên"
         value={TenDangNhap}
-        onChangeText={setTenDangNhap}  
+        onChangeText={setTenDangNhap}
       />
 
       <View style={styles.passwordContainer}>

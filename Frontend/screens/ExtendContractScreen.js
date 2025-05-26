@@ -13,7 +13,7 @@ import { Checkbox, Provider as PaperProvider } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 import moment from 'moment';
 
-export default function DormRegisterScreen({ route, navigation }) {
+export default function ExtendContractScreen({ route, navigation }) {
   const { user } = route.params;
   const [studentInfo, setStudentInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -287,7 +287,7 @@ function toMySQLDateOnly(dateStr) {
         </View>
 
         <View style={styles.formBox}>
-          <Text>Ngày đăng ký: {registrationInfo.NgayDangKy}</Text>
+          <Text>Ngày đăng ký gia hạn: {registrationInfo.NgayDangKy}</Text>
 
           <View style={styles.row}>
             <Text>Năm: </Text>

@@ -85,7 +85,7 @@ export default function ContractDetailScreen({ navigation, route }) {
         <TouchableOpacity style={styles.cancelButton} onPress={handleCall}>
           <Text style={styles.cancelText}>Hủy hợp đồng</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.extendButton}>
+        <TouchableOpacity style={styles.extendButton} onPress={() => navigation.navigate('ExtendContract', { user })}>
           <Text style={styles.extendText}>Gia hạn hợp đồng</Text>
         </TouchableOpacity>
       </View>

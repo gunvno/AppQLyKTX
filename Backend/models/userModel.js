@@ -138,5 +138,12 @@ exports.getTotalPeopleByMaPhongAndTrangThaiHopDong = (MaPhong, callback) => {
     callback
   );
 };
+exports.setNgayKetThucHopDong = (MaHD, NgayKetThuc, callback) => {
+  db.query(
+    'UPDATE HopDong SET NgayKetThuc = ? WHERE MaHD = ?',
+    [NgayKetThuc, MaHD],
+    callback
+  );
+}
 
 
