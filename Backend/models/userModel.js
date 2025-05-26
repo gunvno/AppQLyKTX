@@ -81,4 +81,43 @@ exports.updatePasswordById = (id, newPassword, callback) => {
     callback
   );
 }
+exports.getRoomByFloor = (floor, callback) => {
+  const floorNum = Number(floor);
+  if (isNaN(floorNum)) {
+    // Trả về lỗi nếu không phải số
+    return callback(new Error('Tầng không hợp lệ'), []);
+  }
+  db.query('SELECT * FROM Phong WHERE Tang = ?', [floorNum], callback);
+};
+exports.getMaKyByHocKyVaNamBatDau = (hocKy, namBatDau, callback) => {
+  db.query(
+    'SELECT MaKy FROM KyDangKy WHERE HocKy = ? AND NamBatDau = ?',
+    [hocKy, namBatDau],
+    callback
+  );
+}
+exports.insertHopDong = (hopDong, callback) => {
+  const { TenDangNhap, MaPhong, MaKy, NgayDangKy, NgayBatDau, NgayKetThuc, TienPhong } = hopDong;
+  db.query(
+    'INSERT INTO HopDong (TenDangNhap, MaPhong, MaKy, NgayDangKy, NgayBatDau, NgayKetThuc, TienPhong, TrangThai) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [TenDangNhap, MaPhong, MaKy, NgayDangKy, NgayBatDau, NgayKetThuc, TienPhong, "Đang có hiệu lực"],
+    callback
+  );
+}
+
+exports.updateRole1 = (TenDangNhap, callback) => {
+  db.query(
+    'UPDATE user SET Role = 1 WHERE TenDangNhap = ?',
+    [TenDangNhap], callback
+  );
+} 
+exports.getRoomById = (id, callback) => {
+  db.query(
+    'SELECT * FROM Phong WHERE MaPhong = ?',
+    [id],
+    callback
+  );
+}
+
+
 

@@ -131,3 +131,81 @@ exports.sendPassword = (TenDangNhap, callback) => {
     });
   });
 };
+exports.getRoomByFloor = (req, res) => {
+  const { floor } = req.params;
+
+  userModel.getRoomByFloor(floor, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi lấy thông tin phòng:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ success: true, rooms: result });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy phòng' });
+    }
+  });
+}
+exports.getMaKyByHocKyVaNamBatDau = (req, res) => {
+  const { HocKy, NamBatDau } = req.params;
+  userModel.getMaKyByHocKyVaNamBatDau(HocKy, NamBatDau, (err, result) => {
+    if (err) {
+      console.error('Lỗi truy vấn:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+    if (result.length > 0) {
+      res.json({ success: true, MaKy: result[0].MaKy });
+    } else {
+      res.json({ success: false, message: 'Không tìm thấy MaKy phù hợp' });
+    }
+  });
+};
+exports.insertHopDong = (req, res) => {
+  const hopDong = req.body;
+
+  userModel.insertHopDong(hopDong, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi thêm hợp đồng:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(201).json({ success: true, message: 'Hợp đồng đã được thêm thành công' });
+    } else {
+      res.status(400).json({ success: false, message: 'Không thể thêm hợp đồng' });
+    }
+  });
+};
+exports.updateRole1 = (req, res) => {
+  const { TenDangNhap } = req.params;
+
+  userModel.updateRole1(TenDangNhap, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi cập nhật vai trò:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ success: true, message: 'Cập nhật vai trò thành công' });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+  });
+}
+exports.getRoomById = (req, res) => {
+  const { id } = req.params;
+
+  userModel.getRoomById(id, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi lấy thông tin phòng:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ success: true, room: result[0] });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy phòng' });
+    }
+  });
+}

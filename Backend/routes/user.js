@@ -21,4 +21,9 @@ router.post('/sendPassword/:id', (req, res) => {
       }
     });
   });
+router.get('/getRoomByFloor/:floor', userController.getRoomByFloor);
+router.get('/getMaKyByHocKyVaNamBatDau/:HocKy/:NamBatDau', userController.getMaKyByHocKyVaNamBatDau);
+router.post('/insertHopDong', userController.insertHopDong);
+router.post('/updateRole1/:TenDangNhap', userController.updateRole1);
+router.get('/getRoomById/:id', userController.getRoomById);
 module.exports = router;

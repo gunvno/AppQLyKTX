@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { getUserNotRegisteredById } from '../api/api';
+import { getUserNotRegisteredById, getRoomByFloor, getMaKyByHocKyVaNamBatDau, updateRole1, insertHopDong, getRoomById } from '../api/api';
 import { Checkbox, Provider as PaperProvider } from 'react-native-paper'; 
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 
@@ -16,6 +16,7 @@ export default function DormRegisterScreen({ route, navigation }) {
   const { user } = route.params;
   const [studentInfo, setStudentInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [roomList, setRoomList] = useState([]);
 
   const [registrationInfo, setRegistrationInfo] = useState({
     NgayDangKy: new Date().toLocaleDateString(),
@@ -26,7 +27,57 @@ export default function DormRegisterScreen({ route, navigation }) {
     Phong: '108',
     DongY: false,
   });
-
+  const getRoomById1 = async (maPhong) => {
+    try {
+      const res = await getRoomById(maPhong);
+      if (res.success) {
+        return res.room; // hoặc res.data tuỳ theo API trả về
+      } else {
+        Alert.alert('Lỗi', res.message || 'Không tìm thấy phòng');
+        return null;
+      }
+    } catch (error) {
+      Alert.alert('Lỗi', 'Không thể kết nối đến server');
+      return null;
+    }
+  };
+  const getMaKy = async () => {
+    try {
+      const hocKy = registrationInfo.Dot;
+      const nam = registrationInfo.Nam;
+      const res = await getMaKyByHocKyVaNamBatDau(hocKy, nam);
+      if (res.success) {
+        const maKy = res.MaKy;
+        console.log('Mã kỳ lấy được:', maKy);
+        // Xử lý tiếp với maKy nếu cần, ví dụ:
+        // setRegistrationInfo(prev => ({ ...prev, MaKy: maKy }));
+        return maKy;
+      } else {
+        Alert.alert('Không tìm thấy mã kỳ', res.message || 'Không có dữ liệu phù hợp');
+        return null;
+      }
+    } catch (error) {
+      console.error('Lỗi khi lấy MaKy:', error);
+      Alert.alert('Lỗi server', 'Không thể kết nối đến server');
+      return null;
+    }
+  };
+  const getStartEndDate = (dot, year) => {
+    if (dot === 'K2') {
+      // Ngày bắt đầu: 01/02/năm, Ngày kết thúc: 01/06/năm
+      return {
+        start: `01/02/${year}`,
+        end: `01/06/${year}`
+      };
+    } else if (dot === 'K1') {
+      // Ngày bắt đầu: 01/08/(năm-1), Ngày kết thúc: 31/01/năm
+      return {
+        start: `01/08/${Number(year) - 1}`,
+        end: `31/01/${year}`
+      };
+    }
+    return { start: '', end: '' };
+  };
   useEffect(() => {
     const fetchStudentInfo = async () => {
       try {
@@ -46,22 +97,87 @@ export default function DormRegisterScreen({ route, navigation }) {
 
     fetchStudentInfo();
   }, [user.TenDangNhap]);
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const res = await getRoomByFloor(registrationInfo.Tang);
+        if (res.success) {
+          setRoomList(res.rooms);
+          if (!res.rooms.find(r => r.MaPhong === registrationInfo.Phong)) {
+            setRegistrationInfo(prev => ({ ...prev, Phong: res.rooms[0]?.MaPhong || '' }));
+          }
+        } else {
+          setRoomList([]);
+          setRegistrationInfo(prev => ({ ...prev, Phong: '' }));
+        }
+      } catch (error) {
+        setRoomList([]);
+        setRegistrationInfo(prev => ({ ...prev, Phong: '' }));
+      }
+    };
+    fetchRooms();
+  }, [registrationInfo.Tang]);
 
-  const toggleMonth = (month) => {
-    setRegistrationInfo((prev) => {
-      const months = prev.ThoiGianDangKy.includes(month)
-        ? prev.ThoiGianDangKy.filter((m) => m !== month)
-        : [...prev.ThoiGianDangKy, month];
-      return { ...prev, ThoiGianDangKy: months };
-    });
-  };
+// Truyền vào chuỗi dạng 'dd/mm/yyyy', trả về số tháng (1-12)
+const getMonthFromDate = (dateStr) => {
+  if (!dateStr) return null;
+  const parts = dateStr.split('/');
+  if (parts.length < 2) return null;
+  let day = Number(parts[0]);
+  let month = Number(parts[1]);
+  // Nếu là ngày 31 và tháng 1 thì làm tròn lên tháng 2
+  if (day === 31 && month === 1) return 2;
+  return month;
+};
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!registrationInfo.DongY) {
       Alert.alert('Thông báo', 'Bạn cần đồng ý với điều khoản trước khi đăng ký');
       return;
     }
-    Alert.alert('Đăng ký thành công', JSON.stringify(registrationInfo));
+  
+    // Lấy các giá trị cần thiết
+    const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
+    const maPhong = registrationInfo.Phong;
+    const hocKy = registrationInfo.Dot;
+    const nam = registrationInfo.Nam;
+    const ngayDangKy = registrationInfo.NgayDangKy;
+    const thangBatDau = getMonthFromDate(start);
+    const thangKetThuc = getMonthFromDate(end);
+    const maKy = await getMaKy();
+    const phong = await getRoomById1(maPhong);
+    console.log('Lỗi:', phong.TienPhong);
+    if (!maKy) return;
+  
+    // Gọi API insertHopDong
+    try {
+      const res = await insertHopDong({
+        TenDangNhap: user.TenDangNhap,
+        MaPhong: maPhong,
+        MaKy: maKy,
+        NgayDangKy: ngayDangKy,
+        NgayBatDau: start,
+        NgayKetThuc: end,
+        TienPhong: phong.TienPhong // Thay bằng giá trị thực tế nếu có
+      });
+      if (res.success) {
+        // Sau khi đăng ký thành công, gọi updateRole1
+        try {
+          const resRole = await updateRole1(user.TenDangNhap);
+          if (resRole.success) {
+            Alert.alert('Đăng ký thành công', 'Vai trò đã được cập nhật!');
+          } else {
+            Alert.alert('Đăng ký thành công', 'Nhưng cập nhật vai trò thất bại!');
+          }
+        } catch (error) {
+          Alert.alert('Đăng ký thành công', 'Nhưng cập nhật vai trò thất bại!');
+        }
+      } else {
+        Alert.alert('Lỗi', res.message || 'Đăng ký hợp đồng thất bại!');
+      }
+    } catch (error) {
+      Alert.alert('Lỗi', 'Đăng ký hợp đồng thất bại!');
+    }
   };
 
   if (loading) {
@@ -79,6 +195,8 @@ export default function DormRegisterScreen({ route, navigation }) {
       </View>
     );
   }
+
+  const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
 
   return (
     
@@ -125,24 +243,19 @@ export default function DormRegisterScreen({ route, navigation }) {
               onValueChange={(itemValue) =>
                 setRegistrationInfo({ ...registrationInfo, Dot: itemValue })
               }>
-              <Picker.Item label="HK1" value="HK1" />
-              <Picker.Item label="HK2" value="HK2" />
+              <Picker.Item label="K1" value="K1" />
+              <Picker.Item label="K2" value="K2" />
             </Picker>
           </View>
 
-          <Text style={{ marginTop: 10 }}>Chọn thời gian đăng ký:</Text>
+          <Text style={{ marginTop: 10 }}>Thời gian đăng ký:</Text>
           <View style={styles.checkboxRow}>
-            {['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'].map(
-              (month, index) => (
-                <View style={styles.checkboxContainer} key={index}>
-                  <Checkbox
-                    status={registrationInfo.ThoiGianDangKy.includes(month) ? 'checked' : 'unchecked'}
-                    onPress={() => toggleMonth(month)}
-                  />
-                  <Text>{month}</Text>
-                </View>
-              )
-            )}
+          <View style={styles.row}>
+            <Text>Ngày bắt đầu: </Text>
+            <Text style={{ fontWeight: 'bold', marginRight: 20 }}>{start}</Text>
+            <Text>Ngày kết thúc: </Text>
+            <Text style={{ fontWeight: 'bold' }}>{end}</Text>
+          </View>
           </View>
 
           <View style={styles.row}>
@@ -155,6 +268,9 @@ export default function DormRegisterScreen({ route, navigation }) {
               }>
               <Picker.Item label="1" value="1" />
               <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+              <Picker.Item label="4" value="4" />
+              <Picker.Item label="5" value="5" />
             </Picker>
 
             <Text>Phòng: </Text>
@@ -164,8 +280,13 @@ export default function DormRegisterScreen({ route, navigation }) {
               onValueChange={(itemValue) =>
                 setRegistrationInfo({ ...registrationInfo, Phong: itemValue })
               }>
-              <Picker.Item label="108" value="108" />
-              <Picker.Item label="201" value="201" />
+              {roomList.length > 0 ? (
+                roomList.map((room) => (
+                  <Picker.Item key={room.MaPhong} label={room.MaPhong.toString()} value={room.MaPhong} />
+                ))
+              ) : (
+                <Picker.Item label="Không có phòng" value="" />
+              )}
             </Picker>
           </View>
 

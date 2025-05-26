@@ -101,4 +101,61 @@ export const sendPassword = async (id) => {
     throw error;
   }
 };
-export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, getContractByUser, getContractByContractId, updatePassword, sendPassword };
+export const getRoomByFloor = async (floor) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/getRoomByFloor/${floor}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getRoomByFloor:', error);
+    throw error;
+  }
+};
+export const getMaKyByHocKyVaNamBatDau = async (HocKy, NamBatDau) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/getMaKyByHocKyVaNamBatDau/${HocKy}/${NamBatDau}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getMaKyByHocKyVaNamBatDau:', error);
+    throw error;
+  }
+};
+export const insertHopDong = async (hopDong) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/insertHopDong`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(hopDong),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API insertHopDong:', error);
+    throw error;
+  }
+}
+export const updateRole1 = async (TenDangNhap) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/updateRole1/${TenDangNhap}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API updateRole1:', error);
+    throw error;
+  }
+};
+export const getRoomById = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/getRoomById/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getRoomById:', error);
+    throw error;
+  }
+}
+export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById };
