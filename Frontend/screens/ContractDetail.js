@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert, ActivityIndicator,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Alert, ActivityIndicator,TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -59,6 +59,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E3F2FD',
+    paddingTop: 20,
+    platform: 'android' ? 20 : 0, // Adjust for iOS notch
   },
   header: {
     flexDirection: 'row',

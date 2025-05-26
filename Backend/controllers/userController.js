@@ -1,5 +1,5 @@
 const userModel = require('../models/userModel');
-
+const sendMail = require('../utils/mailer');
 exports.getAllUsers = (req, res) => {
   userModel.getAllUsers((err, results) => {
     if (err) return res.status(500).json({ message: 'Lỗi server', error: err });
@@ -53,9 +53,7 @@ exports.getContractByUser = (req, res) => {
 
     if (result.length > 0) {
       res.status(200).json({ success: true, contracts: result });
-    } else {
-      res.status(404).json({ success: false, message: 'Không tìm thấy hợp đồng' });
-    }
+    } 
   });
 }
 exports.getContractByContractId = (req, res) => {
@@ -107,3 +105,29 @@ exports.getRequestById = (req, res) => {
     }
   });
 }
+exports.sendPassword = (TenDangNhap, callback) => {
+  userModel.getPasswordAndEmailById(TenDangNhap, (err, result) => {
+    if (err) {
+      console.error('Lỗi truy vấn:', err);
+      return callback({ success: false, message: 'Lỗi server' });
+    }
+    if (!result || result.length === 0) {
+      console.error('Không tìm thấy user với TenDangNhap:', TenDangNhap);
+      return callback({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+
+    const { Email } = result[0];
+    const newPassword = Math.random().toString(36).slice(-8);
+
+    userModel.updatePassword(TenDangNhap, newPassword, (err, updateResult) => {
+      if (err || updateResult.affectedRows === 0) {
+        console.error('Lỗi khi cập nhật mật khẩu:', err);
+        return callback({ success: false, message: 'Lỗi server' });
+      }
+
+      // Gửi email với mật khẩu mới
+      require('../utils/mailer')(Email, 'Mật khẩu mới', `Mật khẩu mới của bạn là: ${newPassword}`);
+      callback({ success: true, message: 'Mật khẩu đã được gửi đến email của bạn' });
+    });
+  });
+};

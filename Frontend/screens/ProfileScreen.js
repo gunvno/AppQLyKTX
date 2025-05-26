@@ -96,7 +96,7 @@ console.log('Thông tin người dùng:', userData);
 
     <View style={styles.userInfoCard}>
       <Image 
-        source={{ uri: userData.Anh }} // Thay thế bằng URL ảnh thật
+        source={{ uri: userData.Anh }} 
         style={styles.avatar}
       />
       <View style={styles.userInfo}>

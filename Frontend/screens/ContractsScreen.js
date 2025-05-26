@@ -59,7 +59,7 @@ export default function ContractsScreen({ navigation, route }) {
 
     fetchUserData();
   }, [user.TenDangNhap]);
-  if (loading) return <View style={styles.container}><Text>Không có hợp đồng</Text></View>;
+  
   const renderItem = ({ item }) => (
   console.log('Navigating with item:', item),
   <TouchableOpacity
@@ -77,20 +77,27 @@ export default function ContractsScreen({ navigation, route }) {
   </TouchableOpacity>
 );
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Hợp đồng</Text>
-        </View>
-      <FlatList
-        data={listContract}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-      />
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+      <Text style={styles.headerText}>Hợp đồng</Text>
     </View>
-  );
+    <FlatList
+      data={listContract}
+      keyExtractor={(item) => item.id}
+      renderItem={renderItem}
+      ListEmptyComponent={
+        loading && (
+          <View style={{ alignItems: 'center', marginTop: 40 }}>
+            <Text style={{ color: '#888', fontSize: 16 }}>Không có hợp đồng nào tồn tại</Text>
+          </View>
+        )
+      }
+    />
+  </View>
+);
 }
 
 // ===================== STYLE =====================

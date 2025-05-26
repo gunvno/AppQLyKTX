@@ -67,4 +67,18 @@ exports.getRequestById = (id, callback) => {
     callback
   );
 };
+exports.getPasswordAndEmailById = (id, callback) => {
+  db.query(
+    'SELECT Password, Email, Username FROM user WHERE TenDangNhap = ?',
+    [id],
+    callback
+  );
+}
+exports.updatePasswordById = (id, newPassword, callback) => {
+  db.query(
+    'UPDATE user SET Password = ? WHERE TenDangNhap = ?',
+    [newPassword, id],
+    callback
+  );
+}
 

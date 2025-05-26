@@ -86,4 +86,19 @@ export const getRequestById = async (id) => {
     throw error;
   }
 };
-export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, getContractByUser, getContractByContractId, updatePassword };
+export const sendPassword = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/sendPassword/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const text = await response.text();
+    console.log('Raw response:', text); // Thêm dòng này để xem backend trả về gì
+    const data = JSON.parse(text);
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API sendPassword:', error);
+    throw error;
+  }
+};
+export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, getContractByUser, getContractByContractId, updatePassword, sendPassword };
