@@ -218,7 +218,139 @@ export const getTangAndPhongByMaHopDong = async (MaHD) => {
     throw error;
   }
 }
+export const getRequestsByUsername  = async (id) =>{
+  try { 
+    const response = await fetch(`${BASE_URL}/users/getRequestsByUsername/${id}`);
+    const data = await response.json();
+    return data;
+    } catch (error) {
+      console.error('Lỗi khi gọi API getRequestsByUsername:', error);
+      throw error;
+      }
+}
+export const createRequest = async (requestData) => {
+  const response = await fetch(`${BASE_URL}/users/createRequest`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestData),
+  });
+
+  const text = await response.text();  // Lấy raw text phản hồi
+
+  try {
+    // Cố gắng parse JSON
+    const data = JSON.parse(text);
+    return data;
+  } catch (error) {
+    console.error('Response is not JSON:', text);
+    throw error;
+  }
+};
+export const getRequestDetail = async (id) => {
+  try {
+    const res = await fetch(`${BASE_URL}/users/request/${id}`);
+
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      // Server trả về không phải JSON (có thể HTML lỗi)
+      const text = await res.text();
+      console.error('Response is not JSON:', text);
+      return { success: false, message: 'Phản hồi không hợp lệ từ server' };
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi fetch getRequestDetail:', error);
+    return { success: false, message: 'Lỗi kết nối đến server' };
+  }
+};
+
+export const cancelRequest = async (id) => {
+  try {
+    const res = await fetch(`${BASE_URL}/users/request/cancel/${id}`, {
+      method: 'PUT',
+    });
+
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await res.text();
+      console.error('Response is not JSON:', text);
+      return { success: false, message: 'Phản hồi không hợp lệ từ server' };
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi fetch cancelRequest:', error);
+    return { success: false, message: 'Lỗi kết nối đến server' };
+  }
+};
+export const getBillsByUsername = async (username) => {
+  try {
+    const response = await fetch(`${BASE_URL}/bills/${username}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getBillsByUsername:', error);
+    throw error;
+  }
+};
+
+
+
+// Lấy chi tiết hóa đơn theo MaHD
+export const getBillDetail = async (billId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/bills/detail/${billId}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getBillDetail:', error);
+    throw error;
+  }
+};
+
+//Cập nhật trạng thái hóa đơn
+export const updateBillStatus = async (MaHD, status) => {
+  try {
+    const response = await fetch(`${BASE_URL}/bills/update-status/${MaHD}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ TrangThai: status }),
+    });
+
+    // Nếu không phản hồi thành công
+    if (!response.ok) {
+      const errorText = await response.text(); 
+      console.error('Lỗi từ server:', errorText);
+      throw new Error('Server trả về lỗi, không phải JSON');
+    }
+
+    // Nếu ok, cố gắng parse JSON
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi cập nhật trạng thái:', error);
+    throw error;
+  }
+};
+
+export const getBillsByUserId = async (username) => {
+  try {
+    console.log('Gọi API getBillsByUserId với username:', username);
+    const response = await fetch(`${BASE_URL}/bills/all/${username}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getBillsByUserId:', error);
+    throw error;
+  }
+};
+
 export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, 
   getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,
   getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById,
-  updateTrangThaiHuyHopDong, updateRole0, getTotalPeopleByMaPhongAndTrangThaiHopDong, setNgayKetThucHopDong, getTangAndPhongByMaHopDong };
+  updateTrangThaiHuyHopDong, updateRole0, getTotalPeopleByMaPhongAndTrangThaiHopDong,
+   setNgayKetThucHopDong, getTangAndPhongByMaHopDong, getRequestsByUsername, createRequest, 
+   getRequestDetail, cancelRequest, getBillsByUsername, getBillDetail, updateBillStatus, getBillsByUserId };

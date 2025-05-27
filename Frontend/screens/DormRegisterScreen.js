@@ -155,17 +155,7 @@ export default function DormRegisterScreen({ route, navigation }) {
     const [day, month, year] = dateStr.split('/');
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   }
-  function toMySQLDateTime(dateStr) {
-  // Nếu có cả ngày và giờ (vd: "05/05/2025, 09:23:29")
-  if (dateStr.includes(',')) {
-    const [datePart, timePart] = dateStr.split(',').map(s => s.trim());
-    const [day, month, year] = datePart.split('/');
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${timePart}`;
-  }
-  // Nếu chỉ có ngày (vd: "05/05/2025")
-  const [day, month, year] = dateStr.split('/');
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-}
+
 function toMySQLDateOnly(dateStr) {
   if (!dateStr) return '';
   let datePart = dateStr;

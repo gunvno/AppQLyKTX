@@ -13,8 +13,14 @@ import ProfileDetailScreen from '../screens/ProfileDetailScreen';
 import RequestScreen from '../screens/RequestScreen'; 
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ExtendContractScreen from '../screens/ExtendContractScreen';
-import FlashMessage from 'react-native-flash-message';
 import ContractPdfScreen from '../screens/ContractPdfScreen'; 
+import ChangeRoomScreen from '../screens/ChangeRoomScreen';
+import RequestDetailScreen from '../screens/RequestDetailScreen';
+import ReturnRoomScreen from '../screens/ReturnRoomScreen';
+import RepairRequestScreen from '../screens/RepairRequestScreen';
+import HomeBillScreen from '../screens/HomeBillScreen';
+import BillDetailScreen from '../screens/BillDetailScreen';
+import AllBillScreen from '../screens/AllBillScreen';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -34,6 +40,13 @@ export default function AppNavigator() {
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ExtendContract" component={ExtendContractScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ContractPdf" component={ContractPdfScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ChangeRoom" component={ChangeRoomScreen} options={{ headerShown: false }} /> 
+      <Stack.Screen name="RequestDetail" component={RequestDetailScreen} options={{headerShown: false}} />
+      <Stack.Screen name="ReturnRoom" component={ReturnRoomScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="RepairRoom" component={RepairRequestScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeBill" component={HomeBillScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="BillDetail" component={BillDetailScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="AllBill" component={AllBillScreen} options={{ headerShown: false }} />
       {/* Add other screens here */}
     </Stack.Navigator>
   );

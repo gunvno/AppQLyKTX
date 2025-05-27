@@ -152,5 +152,62 @@ exports.getTangAndPhongByMaHopDong = (MaHD, callback) => {
     callback
   );
 }
+exports.getRequestsByUsername = (id, callback) => {
+  const sql = `
+    SELECT yc.MaYeuCau, yc.TenDangNhap, yc.TenYeuCau, yc.NgayGui, yc.TrangThai,
+           ctyc.NgayThang, ctyc.LyDo, ctyc.HinhAnh
+    FROM YeuCau yc
+    LEFT JOIN ChiTietYeuCau ctyc ON yc.MaYeuCau = ctyc.MaYeuCau
+    WHERE yc.TenDangNhap = ?
+  `;
+  db.query(sql, [id], callback);
+};
+// Thêm mới yêu cầu sửa phòng
+exports.createRequest = (requestData, callback) => {
+  const { TenDangNhap, TenYeuCau, NgayThang, LyDo, HinhAnh } = requestData;
+
+  const sql1 = `
+    INSERT INTO YeuCau (TenDangNhap, TenYeuCau, NgayGui, TrangThai)
+    VALUES (?, ?, NOW(), 'Đã gửi')
+  `;
+
+  db.query(sql1, [TenDangNhap, TenYeuCau], (err, result) => {
+    if (err) return callback(err);
+
+    const maYeuCau = result.insertId;
+
+    const sql2 = `
+      INSERT INTO ChiTietYeuCau (MaYeuCau, NgayThang, LyDo, HinhAnh)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    db.query(sql2, [maYeuCau, NgayThang, LyDo, HinhAnh], (err2) => {
+      if (err2) return callback(err2);
+
+      callback(null, { success: true, message: 'Gửi yêu cầu thành công' });
+    });
+  });
+};
+
+// Lấy chi tiết yêu cầu theo ID
+exports.getRequestDetail = (id, callback) => {
+  const sqlYeuCau = 'SELECT * FROM YeuCau WHERE MaYeuCau = ?';
+  const sqlChiTiet = 'SELECT * FROM ChiTietYeuCau WHERE MaYeuCau = ?';
+
+  db.query(sqlYeuCau, [id], (err, yeuCau) => {
+    if (err) return callback(err);
+    db.query(sqlChiTiet, [id], (err2, chiTiet) => {
+      if (err2) return callback(err2);
+      callback(null, { yeuCau: yeuCau[0], chiTiet: chiTiet[0] });
+    });
+  });
+};
+
+// Hủy yêu cầu theo ID
+exports.cancelRequest = (id, callback) => {
+  const sql = "UPDATE YeuCau SET TrangThai = N'Đã hủy' WHERE MaYeuCau = ?";
+  db.query(sql, [id], callback);
+};
+
 
 

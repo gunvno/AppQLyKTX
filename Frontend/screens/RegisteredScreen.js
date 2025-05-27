@@ -60,7 +60,7 @@ export default function RegisteredScreen({ route, navigation }) {
       {/* Nút chức năng */}
       <View style={styles.buttonRow}>
         <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Contracts', {user})}>
-          <Text style={styles.icon}>📄</Text>
+          <Text style={styles.icon}>📋</Text>
           <Text>Hợp đồng</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Request', {user})}>
@@ -92,7 +92,7 @@ export default function RegisteredScreen({ route, navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.navIcon}>🏠</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Contracts', {user})}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeBill', {user})}>
           <Text style={styles.navIcon}>📄</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Profile', {user})}>

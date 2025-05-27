@@ -31,4 +31,8 @@ router.post('/updateRole0/:TenDangNhap', userController.updateRole0);
 router.get('/getTotalPeopleByMaPhongAndTrangThaiHopDong/:MaPhong', userController.getTotalPeopleByMaPhongAndTrangThaiHopDong);
 router.post('/setNgayKetThucHopDong/:MaHD', userController.setNgayKetThucHopDong);
 router.get('/getTangAndPhongByMaHopDong/:MaHD', userController.getTangAndPhongByMaHopDong);
+router.get('/getRequestsByUsername/:id', userController.getRequestsByUsername)
+router.post('/createRequest', userController.createRequest);
+router.get('/request/:id', userController.getRequestDetail);
+router.put('/request/cancel/:id', userController.cancelRequest);
 module.exports = router;

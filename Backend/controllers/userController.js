@@ -290,3 +290,66 @@ exports.getTangAndPhongByMaHopDong = (req, res) => {
     }
   });
 }
+exports.getRequestsByUsername = (req, res) => {
+  const { id } = req.params;
+
+  userModel.getRequestsByUsername(id, (err, results) => {
+    if (err) {
+      console.error('Lỗi khi lấy yêu cầu theo tên đăng nhập:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (results.length > 0) {
+      res.status(200).json({ success: true, data: results });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu nào' });
+    }
+  });
+};
+
+exports.createRequest = (req, res) => {
+  console.log('Request body:', req.body);  // xem có nhận đúng body không
+
+  const requestData = req.body;
+
+  userModel.createRequest(requestData, (err, result) => {
+    if (err) {
+      console.error('Lỗi tạo yêu cầu:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+    res.json(result);
+  });
+};
+exports.getRequestDetail = (req, res) => {
+  const { id } = req.params;
+
+  userModel.getRequestDetail(id, (err, data) => {  // gọi hàm từ userModel
+    if (err) {
+      console.error('Lỗi khi lấy chi tiết yêu cầu:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (data.yeuCau && data.chiTiet) {
+      res.status(200).json({ success: true, data });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu' });
+    }
+  });
+};
+
+exports.cancelRequest = (req, res) => {
+  const { id } = req.params;
+
+  userModel.cancelRequest(id, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi hủy yêu cầu:', err);
+      return res.status(500).json({ success: false, message: 'Không thể hủy yêu cầu' });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ success: true, message: 'Yêu cầu đã được hủy' });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu' });
+    }
+  });
+};
