@@ -55,13 +55,6 @@ export default function RegisteredScreen({ route, navigation }) {
             <Text style={styles.infoText}>Tầng: {userData.Tang}</Text>
           </View>
         </View>
-
-        <View style={styles.statusRow}>
-          <Text style={styles.capacity}>Sức chứa: {userData.Succhua}</Text>
-          <Text style={[styles.capacity, { color: userData.TrangThai === 'Còn chỗ' ? 'green' : 'red' }]}>
-            Còn: {userData.TrangThai === 'Còn chỗ' ? '0 chỗ' : '0 chỗ'}
-          </Text>
-        </View>
       </View>
 
       {/* Nút chức năng */}

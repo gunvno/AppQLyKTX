@@ -8,13 +8,14 @@ import {
   ScrollView,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { getUserNotRegisteredById, getRoomByFloor, getMaKyByHocKyVaNamBatDau, updateRole1, insertHopDong, getRoomById,getTotalPeopleByMaPhongAndTrangThaiHopDong } from '../api/api';
+import { getUserNotRegisteredById, getRoomByFloor, getTangAndPhongByMaHopDong, setNgayKetThucHopDong } from '../api/api';
 import { Checkbox, Provider as PaperProvider } from 'react-native-paper'; 
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
 import moment from 'moment';
 
 export default function ExtendContractScreen({ route, navigation }) {
   const { user } = route.params;
+  const { contract } = route.params; // Nhận thông tin hợp đồng từ route.params
   const [studentInfo, setStudentInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [roomList, setRoomList] = useState([]);
@@ -28,70 +29,49 @@ export default function ExtendContractScreen({ route, navigation }) {
     Phong: '101',
     DongY: false,
   });
-  const getRoomById1 = async (maPhong) => {
+  const checkDate = () => {
+  const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
+  const endMySQL = toMySQLDate(end);
+  const oldDate = contract.enddate; // Ngày kết thúc cũ từ hợp đồng
+  console.log(endMySQL, oldDate);
+  if (!endMySQL || !oldDate) {
+    Alert.alert('Lỗi', 'Không xác định được ngày kết thúc');
+    return;
+  }
+
+  if (endMySQL <= oldDate) {
+    Alert.alert('Lỗi', 'Ngày kết thúc mới phải lớn hơn ngày kết thúc hợp đồng cũ!');
+    return;
+  }
+  if(endMySQL > oldDate){
+  console.log('Ngày kết thúc mới:', endMySQL);
+  console.log(contract.id)
+  updateEndDate(contract.id, endMySQL);
+  }
+  else {
+    Alert.alert('Lỗi', 'Kiểu dữ liệu không phù hợp');
+    return;
+  }
+};
+useEffect(() => {
+  if (contract && contract.id) {
+    getTangAndPhong(contract.id);
+  }
+}, [contract]);
+  const updateEndDate  = async (MaHD, NgayKetThuc) => {
     try {
-      const res = await getRoomById(maPhong);
+      const res = await setNgayKetThucHopDong(MaHD, NgayKetThuc);
       if (res.success) {
-        return res.room; // hoặc res.data tuỳ theo API trả về
+        console.log('Cập nhật ngày kết thúc hợp đồng thành công:', res);
+        Alert.alert('Thành công', 'Ngày kết thúc hợp đồng đã được cập nhật thành công');
+        navigation.navigate('ContractDetail', { user, contract: { ...contract, enddate: NgayKetThuc } });
       } else {
-        Alert.alert('Lỗi', res.message || 'Không tìm thấy phòng');
-        return null;
+        console.error('Lỗi cập nhật ngày kết thúc hợp đồng:', res.message || 'Không thể cập nhật');
+        Alert.alert('Lỗi', res.message || 'Không thể cập nhật ngày kết thúc hợp đồng');
       }
     } catch (error) {
-      Alert.alert('Lỗi', 'Không thể kết nối đến server');
-      return null;
-    }
-  };
-  const getMaKy = async () => {
-    try {
-      const hocKy = registrationInfo.Dot;
-      const nam = registrationInfo.Nam;
-      const res = await getMaKyByHocKyVaNamBatDau(hocKy, nam);
-      if (res.success) {
-        const maKy = res.MaKy;
-        console.log('Mã kỳ lấy được:', maKy);
-        // Xử lý tiếp với maKy nếu cần, ví dụ:
-        // setRegistrationInfo(prev => ({ ...prev, MaKy: maKy }));
-        return maKy;
-      } else {
-        Alert.alert('Không tìm thấy mã kỳ', res.message || 'Không có dữ liệu phù hợp');
-        return null;
-      }
-    } catch (error) {
-      console.error('Lỗi khi lấy MaKy:', error);
-      Alert.alert('Lỗi server', 'Không thể kết nối đến server');
-      return null;
-    }
-  };
-  const KiemTraSoLuongNguoi = async () => {
-    try {
-      const MaPhong = registrationInfo.Phong;
-      const res = await getTotalPeopleByMaPhongAndTrangThaiHopDong(MaPhong);
-      if (res.success) {
-        const SoLuong = res.totalPeople;
-        console.log('Số người:', SoLuong);
-        const res2 = await getRoomById(MaPhong);
-        if (res2.success) {
-          const maxPeople = res2.room.Succhua; // Hoặc res2.data.Succhua tuỳ theo API trả về
-          console.log('Số người tối đa trong phòng:', maxPeople);
-          if (SoLuong < maxPeople) {
-            console.log('Da den day');
-            await handleRegister() 
-          } else {
-            Alert.alert('Thông báo', 'Phòng đã đầy, không thể đăng ký');
-            return null;
-          }
-        } else {
-          Alert.alert('Lỗi', res2.message || 'Không tìm thấy thông tin phòng');
-          return null;
-        }
-      } else {
-        Alert.alert('Không tìm thấy mã kỳ', res.message || 'Không có dữ liệu phù hợp');
-        return null;
-      }
-    } catch (error) {
-      console.error('Lỗi khi lấy số lượng:', error);
-      Alert.alert('Lỗi server', 'Không thể kết nối đến server');
+      console.error('Lỗi khi cập nhật ngày kết thúc hợp đồng:', error);
+      Alert.alert('Lỗi', 'Không thể kết nối đến server để cập nhật ngày kết thúc hợp đồng');
       return null;
     }
   };
@@ -166,86 +146,24 @@ export default function ExtendContractScreen({ route, navigation }) {
   const [day, month, year] = dateStr.split('/');
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
-function toMySQLDateOnly(dateStr) {
-  if (!dateStr) return '';
-  let datePart = dateStr;
-  if (dateStr.includes(',')) {
-    datePart = dateStr.split(',')[0].trim();
-  } else if (dateStr.includes(' ')) {
-    datePart = dateStr.split(' ')[0].trim();
-  }
-  // datePart lúc này là mm/dd/yyyy hoặc dd/mm/yyyy
-  const [a, b, c] = datePart.split('/');
-  // Nếu tháng > 12 thì chắc chắn là dd/mm/yyyy, ngược lại là mm/dd/yyyy
-  let year, month, day;
-  if (Number(a) > 12) {
-    // dd/mm/yyyy
-    day = a;
-    month = b;
-    year = c;
-  } else if (Number(b) > 12) {
-    // mm/dd/yyyy
-    month = a;
-    day = b;
-    year = c;
-  } else {
-    // fallback: mặc định mm/dd/yyyy
-    month = a;
-    day = b;
-    year = c;
-  }
-  if (!day || !month || !year) return '';
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-}
-
-  const handleRegister = async () => {
-    if (!registrationInfo.DongY) {
-      Alert.alert('Thông báo', 'Bạn cần đồng ý với điều khoản trước khi đăng ký');
-      return;
-    }
-  
-    // Lấy các giá trị cần thiết
-    const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
-    const maPhong = registrationInfo.Phong;
-    const ngayDangKy = registrationInfo.NgayDangKy;
-    const maKy = await getMaKy();
-    const phong = await getRoomById1(maPhong);
-    console.log('Lỗi:', phong.GiaPhong);
-    if (!maKy) return;
-    const ngayDangKyMySQL = toMySQLDateOnly(ngayDangKy);
-    const startMySQL = toMySQLDate(start);
-    const endMySQL = toMySQLDate(end);
-    console.log('Giá trị ngày đăng ký gốc:', registrationInfo.NgayDangKy);
-    console.log('Sau khi chuyển:', ngayDangKyMySQL);
-    // Gọi API insertHopDong
-    try {
-      const res = await insertHopDong({
-        TenDangNhap: user.TenDangNhap,
-        MaPhong: maPhong,
-        MaKy: maKy,
-        NgayDangKy: ngayDangKyMySQL,
-        NgayBatDau: startMySQL,
-        NgayKetThuc: endMySQL,
-        TienPhong: phong.GiaPhong // Thay bằng giá trị thực tế nếu có
-      });
-      if (res.success) {
-  // Sau khi đăng ký thành công, gọi updateRole1
+const getTangAndPhong = async (MaHD) => {
   try {
-    const resRole = await updateRole1(user.TenDangNhap);
-    console.log('Cập nhật vai trò thành công:', resRole);
-    // Tạo user mới với Role = '1'
-    const updatedUser = { ...user, Role: '1' };
-    navigation.navigate('Registered', { user: updatedUser });
-  } catch (error) {
-    Alert.alert('Đăng ký thành công', 'Nhưng cập nhật vai trò thất bại!');
+    const res = await getTangAndPhongByMaHopDong(MaHD);
+    if (res.success) {
+      const { Tang, MaPhong } = res.tangAndPhong;
+      console.log('Thông tin tầng và phòng:', Tang, MaPhong);
+      setRegistrationInfo(prev => ({
+        ...prev, Tang: Tang,
+        Phong: MaPhong,
+      }));
   }
-} else {
-  Alert.alert('Lỗi', res.message || 'Đăng ký hợp đồng thất bại!');
 }
-    } catch (error) {
-      Alert.alert('Lỗi', 'Đăng ký hợp đồng thất bại!');
-    }
-  };
+  catch (error) {
+    console.error('Lỗi khi lấy tầng và phòng:', error);
+    Alert.alert('Lỗi', 'Không thể lấy thông tin tầng và phòng');
+    return null;
+  }
+};
 
   if (loading) {
     return (
@@ -272,7 +190,7 @@ function toMySQLDateOnly(dateStr) {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Đăng kí ở</Text>
+        <Text style={styles.headerText}>Gia hạn hợp đồng</Text>
         </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.sectionTitle}>THÔNG TIN SINH VIÊN</Text>
@@ -327,34 +245,13 @@ function toMySQLDateOnly(dateStr) {
 
           <View style={styles.row}>
             <Text>Tầng: </Text>
-            <Picker
-              selectedValue={registrationInfo.Tang}
-              style={styles.picker}
-              onValueChange={(itemValue) =>
-                setRegistrationInfo({ ...registrationInfo, Tang: itemValue })
-              }>
-              <Picker.Item label="1" value="1" />
-              <Picker.Item label="2" value="2" />
-              <Picker.Item label="3" value="3" />
-              <Picker.Item label="4" value="4" />
-              <Picker.Item label="5" value="5" />
-            </Picker>
-
+            <Text style={{ fontWeight: 'bold', marginRight: 20 }}>
+              {registrationInfo.Tang || registrationInfo.tang || 'N/A'}
+            </Text>
             <Text>Phòng: </Text>
-            <Picker
-              selectedValue={registrationInfo.Phong}
-              style={styles.picker}
-              onValueChange={(itemValue) =>
-                setRegistrationInfo({ ...registrationInfo, Phong: itemValue })
-              }>
-              {roomList.length > 0 ? (
-                roomList.map((room) => (
-                  <Picker.Item key={room.MaPhong} label={room.MaPhong.toString()} value={room.MaPhong} />
-                ))
-              ) : (
-                <Picker.Item label="Không có phòng" value="" />
-              )}
-            </Picker>
+            <Text style={{ fontWeight: 'bold' }}>
+              {registrationInfo.Phong || registrationInfo.phong || registrationInfo.MaPhong || 'N/A'}
+            </Text>
           </View>
 
           <View style={styles.checkboxContainer}>
@@ -368,8 +265,8 @@ function toMySQLDateOnly(dateStr) {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.registerButton} onPress={KiemTraSoLuongNguoi}>
-          <Text style={styles.registerButtonText}>Đăng ký</Text>
+        <TouchableOpacity style={styles.registerButton} onPress={checkDate}>
+          <Text style={styles.registerButtonText}>Gia hạn</Text>
         </TouchableOpacity>
       </ScrollView>
     </PaperProvider>

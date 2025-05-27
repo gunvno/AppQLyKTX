@@ -145,5 +145,12 @@ exports.setNgayKetThucHopDong = (MaHD, NgayKetThuc, callback) => {
     callback
   );
 }
+exports.getTangAndPhongByMaHopDong = (MaHD, callback) => {
+  db.query(
+    'SELECT p.Tang, p.MaPhong FROM HopDong hd JOIN Phong p ON hd.MaPhong = p.MaPhong WHERE hd.MaHD = ?',
+    [MaHD],
+    callback
+  );
+}
 
 

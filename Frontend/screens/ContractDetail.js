@@ -76,7 +76,7 @@ export default function ContractDetailScreen({ navigation, route }) {
       <Text>Tiền thuê KTX: {contract.tienphong}</Text>
       <Text>Loại phòng: {contract.loai}</Text>
       <View/>
-      <TouchableOpacity style={styles.viewDocButton}>
+      <TouchableOpacity style={styles.viewDocButton} onPress={() => navigation.navigate('ContractPdf', { user, contract })}>
           <Icon name="file-text" size={18} color="#1976D2" />
           <Text style={styles.viewDocText}>Xem văn bản hợp đồng</Text>
         </TouchableOpacity>
@@ -85,7 +85,7 @@ export default function ContractDetailScreen({ navigation, route }) {
         <TouchableOpacity style={styles.cancelButton} onPress={handleCall}>
           <Text style={styles.cancelText}>Hủy hợp đồng</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.extendButton} onPress={() => navigation.navigate('ExtendContract', { user })}>
+        <TouchableOpacity style={styles.extendButton} onPress={() => navigation.navigate('ExtendContract', { user, contract })}>
           <Text style={styles.extendText}>Gia hạn hợp đồng</Text>
         </TouchableOpacity>
       </View>

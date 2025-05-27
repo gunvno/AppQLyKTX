@@ -274,3 +274,19 @@ exports.setNgayKetThucHopDong = (req, res) => {
     }
   });
 }
+exports.getTangAndPhongByMaHopDong = (req, res) => {
+  const { MaHD } = req.params;
+
+  userModel.getTangAndPhongByMaHopDong(MaHD, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi lấy thông tin tầng và phòng:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ success: true, tangAndPhong: result[0] });
+    } else {
+      res.status(404).json({ success: false, message: 'Không tìm thấy thông tin' });
+    }
+  });
+}

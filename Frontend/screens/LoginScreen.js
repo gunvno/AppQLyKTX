@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { login } from '../api/api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { showMessage } from 'react-native-flash-message';
@@ -19,26 +19,14 @@ export default function LoginScreen({ navigation }) {
         } else if (String(user.Role) === '1') {
           navigation.navigate('Registered', { user });
         } else {
-          showMessage({
-            message: 'Lỗi',
-            description: 'Role không hợp lệ',
-            type: 'danger',
-          });
+          Alert.alert('Lỗi', 'Role không hợp lệ');
+          console.error('Role không hợp lệ:', user.Role);
         }
       } else {
-        showMessage({
-          message: 'Đăng nhập thất bại',
-          description: res.message || 'Sai thông tin đăng nhập',
-          type: 'danger',
-        });
+        Alert.alert('Đăng nhập thất bại', res.message);
       }
     } catch (error) {
-      console.error('Lỗi đăng nhập:', error);
-      showMessage({
-        message: 'Lỗi server',
-        description: 'Không thể kết nối đến server',
-        type: 'danger',
-      });
+      Alert.alert('Lỗi server', 'Không thể kết nối đến server');
     }
   };
 

@@ -30,4 +30,5 @@ router.post('/updateTrangThaiHuyHopDong/:MaHD', userController.updateTrangThaiHu
 router.post('/updateRole0/:TenDangNhap', userController.updateRole0);
 router.get('/getTotalPeopleByMaPhongAndTrangThaiHopDong/:MaPhong', userController.getTotalPeopleByMaPhongAndTrangThaiHopDong);
 router.post('/setNgayKetThucHopDong/:MaHD', userController.setNgayKetThucHopDong);
+router.get('/getTangAndPhongByMaHopDong/:MaHD', userController.getTangAndPhongByMaHopDong);
 module.exports = router;

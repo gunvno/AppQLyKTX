@@ -79,9 +79,6 @@ useEffect(() => {
         <View style={styles.section}>
           <View style={styles.supplementHeader}>
             <Text style={styles.sectionTitle}>Thông tin bổ sung</Text>
-            <TouchableOpacity>
-              <Text style={styles.updateLink}>Cập nhật</Text>
-            </TouchableOpacity>
           </View>
           {renderItem('Email', userData.Email)}
           {renderItem('Địa chỉ', userData.DiaChi)}

@@ -196,10 +196,10 @@ export const getTotalPeopleByMaPhongAndTrangThaiHopDong = async (MaPhong) => {
 };
 export const setNgayKetThucHopDong = async (MaHD, NgayKetThuc) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/setNgayKetThucHopDong/:MaHD`, {
+    const response = await fetch(`${BASE_URL}/users/setNgayKetThucHopDong/${MaHD}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ MaHD, NgayKetThuc }),
+      body: JSON.stringify({ NgayKetThuc }),
     });
     const data = await response.json();
     return data;
@@ -208,7 +208,17 @@ export const setNgayKetThucHopDong = async (MaHD, NgayKetThuc) => {
     throw error;
   }
 }
+export const getTangAndPhongByMaHopDong = async (MaHD) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/getTangAndPhongByMaHopDong/${MaHD}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API getTangAndPhongByMaHopDong:', error);
+    throw error;
+  }
+}
 export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, 
   getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,
   getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById,
-  updateTrangThaiHuyHopDong, updateRole0, getTotalPeopleByMaPhongAndTrangThaiHopDong, setNgayKetThucHopDong };
+  updateTrangThaiHuyHopDong, updateRole0, getTotalPeopleByMaPhongAndTrangThaiHopDong, setNgayKetThucHopDong, getTangAndPhongByMaHopDong };
