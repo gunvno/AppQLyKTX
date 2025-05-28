@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, BackHandler } from 'react-native';
 import { login } from '../api/api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { showMessage } from 'react-native-flash-message';
@@ -59,8 +59,8 @@ export default function LoginScreen({ navigation }) {
       </TouchableOpacity>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('#')}>
-          <Text style={styles.buttonText}>Quay lại</Text>
+        <TouchableOpacity style={styles.backButton} onPress={() => BackHandler.exitApp()}>
+          <Text style={styles.buttonText}>Thoát</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
