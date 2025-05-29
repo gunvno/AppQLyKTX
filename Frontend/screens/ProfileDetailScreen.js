@@ -10,6 +10,31 @@ const { user } = route.params;
 console.log('Thông tin:', user); // Kiểm tra thông tin người dùng
 const [userData, setUserData] = useState(null);
 const [loading, setLoading] = useState(true);
+    const CheckHopDong = async () => {
+        try {
+          const res = await getUserNotRegisteredById(user.TenDangNhap);
+          if (res.success) {
+            const user = res.user;
+            console.log('Thông tin người dùng:', user.Role);
+      
+            // Kiểm tra role và điều hướng
+            if (String(user.Role) === '0') {
+              // Người dùng chưa đăng ký
+              navigation.navigate('UnRegistered', { user });
+            } else if (String(user.Role) === '1') {
+              // Người dùng đã đăng ký
+              navigation.navigate('Registered', { user });
+            } else {
+              Alert.alert('Lỗi', 'Role không hợp lệ');
+            }
+          } else {
+            Alert.alert('Đăng nhập thất bại', res.message || 'Sai thông tin đăng nhập');
+          }
+        } catch (error) {
+          console.error('Lỗi đăng nhập:', error);
+          Alert.alert('Lỗi server', 'Không thể kết nối đến server');
+        }
+      };
 useEffect(() => {
         const fetchUserData = async () => {
           try {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getBillsByUsername } from '../api/api';
+import { getBillsByUsername,getUserNotRegisteredById } from '../api/api';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const HomeBillScreen = () => {
@@ -11,7 +11,31 @@ const HomeBillScreen = () => {
 
   const { user } = route.params || {};
   const username = user?.TenDangNhap;
-
+      const CheckHopDong = async () => {
+          try {
+            const res = await getUserNotRegisteredById(user.TenDangNhap);
+            if (res.success) {
+              const user = res.user;
+              console.log('Thông tin người dùng:', user.Role);
+        
+              // Kiểm tra role và điều hướng
+              if (String(user.Role) === '0') {
+                // Người dùng chưa đăng ký
+                navigation.navigate('UnRegistered', { user });
+              } else if (String(user.Role) === '1') {
+                // Người dùng đã đăng ký
+                navigation.navigate('Registered', { user });
+              } else {
+                Alert.alert('Lỗi', 'Role không hợp lệ');
+              }
+            } else {
+              Alert.alert('Đăng nhập thất bại', res.message || 'Sai thông tin đăng nhập');
+            }
+          } catch (error) {
+            console.error('Lỗi đăng nhập:', error);
+            Alert.alert('Lỗi server', 'Không thể kết nối đến server');
+          }
+        };
   useEffect(() => {
     if (username) {
       getBillsByUsername(username)
@@ -31,7 +55,10 @@ const HomeBillScreen = () => {
     const d = new Date(dateStr);
     return `Hóa đơn tháng ${d.getMonth() + 1}/${d.getFullYear()}`;
   };
-
+  const getMonthAndYear = (dateStr) => {
+  const d = new Date(dateStr);
+  return { month: d.getMonth() + 1, year: d.getFullYear() };
+};
   const renderBillItem = (item) => (
     <View style={styles.billRow}>
       <Ionicons name="document-text-outline" size={24} color="#000" />
@@ -68,7 +95,10 @@ const HomeBillScreen = () => {
               {renderBillItem(unpaidBill)}
               <TouchableOpacity
                 style={styles.checkButton}
-                onPress={() => navigation.navigate('BillDetail', { id: unpaidBill.MaHD })}
+                onPress={() => {
+                  const { month, year } = getMonthAndYear(unpaidBill.NgayXuatHD);
+                  navigation.navigate('BillDetail', { id: unpaidBill.MaHD,month,year })
+                }}
               >
                 <Text style={styles.checkText}>Kiểm tra</Text>
               </TouchableOpacity>
@@ -87,7 +117,10 @@ const HomeBillScreen = () => {
         {bills.slice(0, 3).map(item => (
           <TouchableOpacity
             key={item.MaHD}
-            onPress={() => navigation.navigate('BillDetail', { id: item.MaHD })}
+            onPress={() => {
+              const { month, year } = getMonthAndYear(item.NgayXuatHD);
+              navigation.navigate('BillDetail', { id: item.MaHD,month, year})
+          }}
           >
             {renderBillItem(item)}
           </TouchableOpacity>
@@ -96,7 +129,7 @@ const HomeBillScreen = () => {
 
       {/* Thanh điều hướng */}
       <View style={styles.navBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('Registered', { user })}>
+        <TouchableOpacity onPress={() => CheckHopDong()}>
           <Text style={styles.navIcon}>🏠</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('HomeBill', { user })}>

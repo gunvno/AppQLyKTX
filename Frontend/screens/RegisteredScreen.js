@@ -39,9 +39,6 @@ export default function RegisteredScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <View>
-        
-      </View>
       {/* Thông tin phòng */}
       <View style={styles.card}>
         <Text style={styles.title}>Ký túc xá Đại học Xây Dựng Hà Nội</Text>
@@ -89,7 +86,7 @@ export default function RegisteredScreen({ route, navigation }) {
 
       {/* Thanh điều hướng */}
       <View style={styles.navBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Registered', {user})}>
           <Text style={styles.navIcon}>🏠</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('HomeBill', {user})}>
@@ -109,9 +106,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    justifyContent: 'space-between', // thêm dòng này
   },
   card: {
+    marginTop: 70,
     backgroundColor: '#fff',
     padding: 15,
     borderRadius: 15,
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20,
+    marginTop: 20,
   },
   iconButton: {
     alignItems: 'center',
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginBottom: 10,
+    marginTop: 70,
   },
   paymentBox: {
     backgroundColor: '#fff',
@@ -160,6 +157,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 1 },
     elevation: 2,
+    marginTop: 10,
   },
   paymentItem: {
     flexDirection: 'row',
@@ -182,13 +180,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    backgroundColor: '#fff',
-  },
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  paddingVertical: 10,
+  borderTopWidth: 1,
+  borderTopColor: '#ccc',
+  backgroundColor: '#fff',
+  position: 'absolute',
+  bottom: 10,
+  left: 0,
+  right: 0,
+},
   navIcon: {
     fontSize: 26,
   },

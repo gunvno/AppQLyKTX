@@ -65,7 +65,7 @@ export default function ChangePasswordScreen({ navigation, route }) {
     
     <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="#fff" />
               </TouchableOpacity>
               <Text style={styles.headerText}>Đổi mật khẩu</Text>
@@ -91,7 +91,6 @@ export default function ChangePasswordScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: '#fff',
   },
   inputContainer: {
@@ -125,22 +124,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-header: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingVertical: 12,
-  paddingHorizontal: 16,
-  backgroundColor: '#1976D2',
-  marginTop: 40,
-},
+header: { backgroundColor: '#2E6CF6', padding: 16, paddingTop: 50, flexDirection: 'row', },
 headerText: {
   color: '#fff',
-  fontSize: 18,
+  fontSize: 20,
   fontWeight: 'bold',
-  marginLeft: 8,
 },
-backButton: {
-  padding: 4,
+backbutton: {
+  marginRight: 12,
 },
 });
 

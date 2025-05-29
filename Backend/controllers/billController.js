@@ -59,3 +59,28 @@ exports.getBillsByUserId = (req, res) => {
 };
 
 
+exports.getMomoQrLink = (req, res) => {
+  const TenDangNhap = req.params;
+
+  userModel.getBillsByUserId(TenDangNhap, (err, result) => {
+    if (err) {
+      console.error('Lỗi khi lấy tổng tiền:', err);
+      return res.status(500).json({ success: false, message: 'Lỗi server' });
+    }
+
+    const total = result[0]?.TongTien || 0;
+
+    // Số điện thoại MoMo nhận tiền
+    const phone = '0386404269';
+    const desc = encodeURIComponent('Thanh toán KTX');
+    const momoLink = `momo://?action=transfer&phone=${phone}&amount=${total}&desc=${desc}`;
+
+    res.status(200).json({
+      success: true,
+      qrLink: momoLink,
+    });
+  });
+};
+
+
+

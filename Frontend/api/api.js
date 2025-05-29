@@ -347,10 +347,24 @@ export const getBillsByUserId = async (username) => {
     throw error;
   }
 };
+export const getMomoQrLink = async (billId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/bank/generate-qr/${billId}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi lấy link MoMo QR:', error);
+    throw error;
+  }
+};
+
+
+
 
 export default { login, getAllUsers, addUser, getUserById, getUserNotRegisteredById, 
   getContractByUser, getContractByContractId, updatePassword, sendPassword,getRoomByFloor,
   getMaKyByHocKyVaNamBatDau, insertHopDong, getRequestById, updateRole1, getRoomById,
   updateTrangThaiHuyHopDong, updateRole0, getTotalPeopleByMaPhongAndTrangThaiHopDong,
    setNgayKetThucHopDong, getTangAndPhongByMaHopDong, getRequestsByUsername, createRequest, 
-   getRequestDetail, cancelRequest, getBillsByUsername, getBillDetail, updateBillStatus, getBillsByUserId };
+   getRequestDetail, cancelRequest, getBillsByUsername, getBillDetail, updateBillStatus, 
+   getBillsByUserId, getMomoQrLink };

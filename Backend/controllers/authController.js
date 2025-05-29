@@ -18,7 +18,7 @@ exports.login = (req, res) => {
       const user = result[0]; // Lấy thông tin người dùng đầu tiên
       res.status(200).json({ success: true, message: 'Đăng nhập thành công', user });
     } else {
-      res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng' });
+      res.status(401).json({ success: false, message: 'Mssv hoặc mật khẩu không đúng' });
     }
   });
 };

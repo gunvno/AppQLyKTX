@@ -208,18 +208,18 @@ console.log('Thông tin người dùng:', userData);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
     backgroundColor: '#fff',
 
   },
   header: {
-    backgroundColor: '#1976D2',
+    backgroundColor: '#2E6CF6',
     paddingVertical: 15,
     paddingHorizontal: 20,
+    paddingTop: 50,
   },
   headerTitle: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   userInfoCard: {

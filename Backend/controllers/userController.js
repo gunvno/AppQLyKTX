@@ -51,11 +51,14 @@ exports.getContractByUser = (req, res) => {
       return res.status(500).json({ success: false, message: 'Lỗi server' });
     }
 
-    if (result.length > 0) {
-      res.status(200).json({ success: true, contracts: result });
-    } 
+    // Luôn trả về success: true kể cả khi không có hợp đồng
+    res.status(200).json({ 
+      success: true, 
+      contracts: result || [] 
+    });
   });
 }
+
 exports.getContractByContractId = (req, res) => {
   const { id } = req.params;
 

@@ -87,13 +87,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1976D2',
+    backgroundColor: '#2E6CF6',
     paddingVertical: 15,
-    marginTop: 40,
+    paddingTop: 50,
   },
   headerText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 8,
   },

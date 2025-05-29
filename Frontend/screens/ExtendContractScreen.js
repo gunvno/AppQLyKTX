@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   backgroundColor: '#3366FF', // hoặc '#2979FF'
     paddingVertical: 15,
-    marginTop: 40,
+    paddingTop: 50, // Để tránh chồng lấn với header
 },
 
 backButton: {

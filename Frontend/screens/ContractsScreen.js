@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { getContractByUser,getUserById } from '../api/api';
+import { getContractByUser,getUserNotRegisteredById } from '../api/api';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -10,33 +10,34 @@ export default function ContractsScreen({ navigation, route }) {
   console.log('Thông tin người dùng:', user); // In thông tin người dùng ra console để kiểm tra
   const [listContract, setListContract] = useState([]);
   const [loading, setLoading] = useState(true);
-    const BackHome = async () => {
-      try {
-        const res = await getUserById(user.TenDangNhap);
-        if (res.success) {
-          const user = res.user;
-          console.log('User từ API:', user);
-          console.log('Role:', user?.Role);
-          // Kiểm tra role và điều hướng
-          if (String(user.Role) === '0') {
-            // Người dùng chưa đăng ký
-            navigation.navigate('UnRegistered', { user });
-          } else if (String(user.Role) === '1') {
-            // Người dùng đã đăng ký
-            navigation.navigate('Registered', { user });
-          } else {
-            Alert.alert('Lỗi', 'Role không hợp lệ');
+const CheckHopDong = async () => {
+          try {
+            const res = await getUserNotRegisteredById(user.TenDangNhap);
+            if (res.success) {
+              const user = res.user;
+              console.log('Thông tin người dùng:', user.Role);
+        
+              // Kiểm tra role và điều hướng
+              if (String(user.Role) === '0') {
+                // Người dùng chưa đăng ký
+                navigation.navigate('UnRegistered', { user });
+              } else if (String(user.Role) === '1') {
+                // Người dùng đã đăng ký
+                navigation.navigate('Registered', { user });
+              } else {
+                Alert.alert('Lỗi', 'Role không hợp lệ');
+              }
+            } else {
+              Alert.alert('Đăng nhập thất bại', res.message || 'Sai thông tin đăng nhập');
+            }
+          } catch (error) {
+            console.error('Lỗi đăng nhập:', error);
+            Alert.alert('Lỗi server', 'Không thể kết nối đến server');
           }
-        } else {
-          Alert.alert('Đăng nhập thất bại', res.message || 'Sai thông tin đăng nhập');
-        }
-      } catch (error) {
-        console.error('Lỗi đăng nhập:', error);
-        Alert.alert('Lỗi server', 'Không thể kết nối đến server');
-      }
-    };
-  // Hàm fetch hợp đồng
+        };
   const fetchContracts = async () => {
+    
+
     setLoading(true);
     try {
       const res = await getContractByUser(user.TenDangNhap);
@@ -83,7 +84,7 @@ export default function ContractsScreen({ navigation, route }) {
     }
   };
 
-  // Luôn fetch lại khi màn hình được focus
+
   useFocusEffect(
     React.useCallback(() => {
       fetchContracts();
@@ -109,7 +110,7 @@ export default function ContractsScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => BackHome()} style={styles.backButton}>
+        <TouchableOpacity onPress={() => CheckHopDong()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Hợp đồng</Text>
@@ -124,7 +125,8 @@ export default function ContractsScreen({ navigation, route }) {
               <Text style={{ color: '#888', fontSize: 16 }}>Không có hợp đồng nào tồn tại</Text>
             </View>
           )
-        }
+}
+
         refreshing={loading}
         onRefresh={fetchContracts}
       />
@@ -135,12 +137,11 @@ export default function ContractsScreen({ navigation, route }) {
 // ===================== STYLE =====================
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'space-between',
   },
   header: {
+    paddingTop: 50,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#3366FF',
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     color: '#fff',
     fontWeight: 'bold',
   },

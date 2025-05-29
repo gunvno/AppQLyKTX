@@ -3,7 +3,7 @@ const db = require('../db');
 // Lấy danh sách hóa đơn theo tên đăng nhập
 exports.getBillsByUsername = (username, callback) => {
   const query = `
-    SELECT hd.MaHD, hd.NgayXuatHD, hd.TongTien, hd.TrangThai
+    SELECT DISTINCT hd.MaHD, hd.NgayXuatHD, hd.TongTien, hd.TrangThai
     FROM hoadon hd
     JOIN hopdong h ON hd.MaPhong = h.MaPhong
     WHERE h.TenDangNhap = ?

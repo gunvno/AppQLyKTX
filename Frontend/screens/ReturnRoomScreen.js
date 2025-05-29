@@ -93,14 +93,20 @@ export default function ReturnRoomScreen({ route, navigation }) {
         </TouchableOpacity>
 
         {showPicker && (
-          <DateTimePicker
-            value={ngayTra}
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            minimumDate={new Date(new Date().setHours(0, 0, 0, 0))}
-            onChange={onChangeDate}
-          />
-        )}
+  <DateTimePicker
+    value={ngayTra}
+    mode="date"
+    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+    // Thay đổi dòng này:
+    minimumDate={(() => {
+      const minDate = new Date();
+      minDate.setDate(minDate.getDate() + 30);
+      minDate.setHours(0, 0, 0, 0);
+      return minDate;
+    })()}
+    onChange={onChangeDate}
+  />
+)}
 
         <Text style={styles.label}>Lý do trả phòng:</Text>
         <TextInput

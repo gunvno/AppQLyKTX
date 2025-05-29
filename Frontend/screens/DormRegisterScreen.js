@@ -258,11 +258,11 @@ function toMySQLDateOnly(dateStr) {
   return (
     
     <PaperProvider>
-                  <View style={styles.header}>
+      <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Đăng kí ở</Text>
+        <Text style={styles.headerText}>Đăng kí ở kí túc xá</Text>
         </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.sectionTitle}>THÔNG TIN SINH VIÊN</Text>
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   backgroundColor: '#3366FF', // hoặc '#2979FF'
     paddingVertical: 15,
-    marginTop: 40,
+    paddingTop: 50,
 },
 
 backButton: {
@@ -437,7 +437,7 @@ backButton: {
 },
 
 headerText: {
-  fontSize: 18,
+  fontSize: 20,
   color: '#fff',
   fontWeight: 'bold',
 },

@@ -97,19 +97,19 @@ export default function ContractDetailScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#E3F2FD',
-    paddingTop: 40,
-    platform: 'android' ? 20 : 0, // Adjust for iOS notch
+    backgroundColor: '#fff',
+    flexGrow: 1,
+    marginTop: 0,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#1976D2',
-    padding: 16,
-    gap: 8,
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#3366FF', // hoặc '#2979FF'
+    paddingVertical: 15,
+    paddingTop: 50, // Để tránh chồng lấn với header
+},
   headerText: {
+    paddingTop:50,
     color: '#fff',
     fontSize: 17,
     fontWeight: '600',
@@ -189,13 +189,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-  header: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: '#3366FF', // hoặc '#2979FF'
-  paddingVertical: 12,
-  paddingHorizontal: 16,
-},
+
 
 backButton: {
   marginRight: 12,
