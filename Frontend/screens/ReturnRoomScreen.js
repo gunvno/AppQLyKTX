@@ -68,7 +68,7 @@ export default function ReturnRoomScreen({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -122,7 +122,7 @@ export default function ReturnRoomScreen({ route, navigation }) {
           {/* Màu nút gửi theo chuẩn màu xanh của header, bạn có thể thay đổi */}
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

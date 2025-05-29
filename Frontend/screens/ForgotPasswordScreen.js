@@ -56,7 +56,7 @@ export default function ForgotPasswordScreen({ navigation }) {
 
       {/* Nút quay lại */}
       <TouchableOpacity
-        style={styles.buttonBack}
+        style={styles.button}
         onPress={() => navigation.navigate('Login')}
       >
         <Text style={styles.buttonText}>Quay lại</Text>

@@ -60,7 +60,7 @@ export default function RequestScreen({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F4F6FA' }}>
+    <View style={{ flex: 1, backgroundColor: '#F4F6FA' }}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -112,7 +112,7 @@ export default function RequestScreen({ navigation, route }) {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -21,8 +21,8 @@ export default function DormRegisterScreen({ route, navigation }) {
 
   const [registrationInfo, setRegistrationInfo] = useState({
     NgayDangKy: new Date().toLocaleDateString(),
-    Nam: '2025',
-    Dot: 'K2',
+    Nam: '2026',
+    Dot: 'K1',
     ThoiGianDangKy: [],
     Tang: '1',
     Phong: '101',
@@ -77,7 +77,6 @@ export default function DormRegisterScreen({ route, navigation }) {
           if (SoLuong < maxPeople) {
             console.log('Da den day');
             await handleRegister() 
-            Alert.alert('Thông báo', 'Đăng ký thành công');
             return true;
           } else {
             Alert.alert('Thông báo', 'Phòng đã đầy, không thể đăng ký');
@@ -193,11 +192,12 @@ function toMySQLDateOnly(dateStr) {
   const handleRegister = async () => {
     if (!registrationInfo.DongY) {
       Alert.alert('Thông báo', 'Bạn cần đồng ý với điều khoản trước khi đăng ký');
-      return;
+      return false;
     }
   
     // Lấy các giá trị cần thiết
-    const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
+else{
+      const { start, end } = getStartEndDate(registrationInfo.Dot, registrationInfo.Nam);
     const maPhong = registrationInfo.Phong;
     const ngayDangKy = registrationInfo.NgayDangKy;
     const maKy = await getMaKy();
@@ -237,6 +237,7 @@ function toMySQLDateOnly(dateStr) {
     } catch (error) {
       Alert.alert('Lỗi', 'Đăng ký hợp đồng thất bại!');
     }
+}
   };
 
   if (loading) {

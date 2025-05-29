@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, ScrollView,TouchableOpacity   } from 're
 import { Ionicons } from '@expo/vector-icons';
 export default function NoiQuyScreen({navigation}) {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
         <View style={styles.header}>
             <View style={styles.headerRow}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -12,7 +12,6 @@ export default function NoiQuyScreen({navigation}) {
             <Text style={styles.headerTitle}>Nội quy</Text>
             </View>
         </View>
-      <Text style={styles.title}>Nội Quy Ký Túc Xá</Text>
       <Image
         source={require('../../assets/494823013_1046775696893206_8139132804052450743_n.png')} // Thay đường dẫn bằng ảnh trong thư mục assets
         style={styles.image}
@@ -21,7 +20,7 @@ export default function NoiQuyScreen({navigation}) {
       <Text style={styles.note}>
         Lưu ý: Vui lòng tuân thủ các nội quy để đảm bảo môi trường sống văn minh và an toàn.
       </Text>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -41,6 +40,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 400,
     marginBottom: 16,
+    marginTop: 16,
   },
   note: {
     fontSize: 14,
@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 16,
   },
-  header: { backgroundColor: '#2E6CF6', padding: 16 },
+  header: { backgroundColor: '#2E6CF6', paddingHorizontal: 16, paddingVertical: 12 },
   headerTitle: { color: 'white', fontSize: 20, marginLeft: 16, fontWeight: 'bold' },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    paddingTop: 50, // Adjust for iOS notch
+    paddingTop: 34, // Adjust for iOS notch
   },
 });

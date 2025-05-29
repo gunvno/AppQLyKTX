@@ -87,7 +87,7 @@ useEffect(() => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Hóa đơn</Text>
@@ -157,7 +157,7 @@ useEffect(() => {
           <Text style={styles.navIcon}>👤</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

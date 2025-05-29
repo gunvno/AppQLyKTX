@@ -72,7 +72,7 @@ export default function RepairRequestScreen({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -107,7 +107,7 @@ export default function RepairRequestScreen({ route, navigation }) {
           <Button title="Gửi yêu cầu" color="#3B82F6" onPress={sendRequest} />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
