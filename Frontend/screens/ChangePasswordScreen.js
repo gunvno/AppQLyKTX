@@ -26,7 +26,14 @@ export default function ChangePasswordScreen({ navigation, route }) {
       alert('Mật khẩu mới không khớp!');
       return;
     }
-
+    if(user.Password !== currentPassword) {
+      alert('Mật khẩu hiện tại không đúng!');
+      return;
+    }
+    if(newPassword === user.Password) {
+      alert('Mật khẩu mới không được trùng với mật khẩu cũ!');
+      return;
+    }
     try {
       const response = await updatePassword(user.TenDangNhap, currentPassword, newPassword);
 
