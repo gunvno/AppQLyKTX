@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons'; // Dùng expo hoặc cài riêng 
 import { updatePassword } from '../api/api'; // Đường dẫn đến file api.js
 
 export default function ChangePasswordScreen({ navigation, route }) {
-    const { user } = route.params;
+    const { user, onPasswordChangeSuccess } = route.params;
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +18,7 @@ export default function ChangePasswordScreen({ navigation, route }) {
   const [secureCurrent, setSecureCurrent] = useState(true);
   const [secureNew, setSecureNew] = useState(true);
   const [secureConfirm, setSecureConfirm] = useState(true);
-
+  console.log(user);
   const isFormValid = currentPassword && newPassword && confirmPassword;
 
   const handleSubmit = async () => {
@@ -26,15 +26,26 @@ export default function ChangePasswordScreen({ navigation, route }) {
       alert('Mật khẩu mới không khớp!');
       return;
     }
-    if(currentPassword !== user.Password){
-      alert('Mật khẩu hiện tại không đúng!');
-      return;
-    }
-    await updatePassword(user.TenDangNhap, newPassword);
-    alert('Đổi mật khẩu thành công!');
-    navigation.goBack(); // quay lại màn trước
 
-    console.log('Đổi mật khẩu thành công');
+    try {
+      const response = await updatePassword(user.TenDangNhap, currentPassword, newPassword);
+
+      if (response && response.success) {
+        alert('Đổi mật khẩu thành công!');
+        if (onPasswordChangeSuccess) {
+          onPasswordChangeSuccess();
+        }
+        navigation.goBack();
+        console.log('Đổi mật khẩu thành công');
+      } else {
+        alert(response.message || 'Đổi mật khẩu thất bại.');
+        console.error('Lỗi đổi mật khẩu từ backend:', response);
+      }
+
+    } catch (error) {
+      alert('Đã xảy ra lỗi khi gọi API đổi mật khẩu.');
+      console.error('Lỗi gọi API đổi mật khẩu:', error);
+    }
   };
 
   const renderInput = (label, value, setValue, secure, setSecure, placeholder) => (

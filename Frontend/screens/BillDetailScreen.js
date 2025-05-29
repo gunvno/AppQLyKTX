@@ -9,11 +9,11 @@ import QRCode from 'react-native-qrcode-svg';
 import { getMomoQrLink } from '../api/api';
 
 const BillDetailScreen = ({ route, navigation }) => {
-  const [momoLink, setMomoLink] = useState('');
+
   const [qrLink, setQrLink] = useState(null);
   const [qrLoading, setQrLoading] = useState(false);
 
-  const { id, month, year } = route.params;
+  const { id, month, year, onPaymentSuccess } = route.params;
   console.log(month, year);
   const [detail, setDetail] = useState(null);
   const [showQRCode, setShowQRCode] = useState(false);
@@ -23,20 +23,29 @@ const BillDetailScreen = ({ route, navigation }) => {
     return `Hóa đơn tháng ${month}/${year}`;
   };
   useEffect(() => {
-    getBillDetail(id).then(setDetail).catch(console.error);
-  }, []);
+  getBillDetail(id)
+    .then((data) => {
+      setDetail(data);
+      console.log('Trạng thái hóa đơn:', data); // Log trạng thái hóa đơn
+    })
+    .catch(console.error);
+}, []);
 
   const handleConfirmPayment = async () => {
     try {
       await updateBillStatus(id, 'Đã thanh toán');
+      // --- Bắt đầu logic thành công ---
       alert('Thanh toán thành công!');
       setDetail({ ...detail, TrangThai: 'Đã thanh toán' });
       setShowQRCode(false);
-      setTimeout(() => {
-        navigation.goBack();
-      }, 2000);
+      if (onPaymentSuccess) onPaymentSuccess();
+      navigation.goBack(); // Quay lại màn hình trước CHỈ KHI thành công
+      // --- Kết thúc logic thành công ---
     } catch (err) {
+      // --- Bắt đầu logic xử lý lỗi ---
       alert('Lỗi khi thanh toán!');
+      console.error('Lỗi updateBillStatus:', err); // Log lỗi chi tiết hơn để debug
+      // --- Kết thúc logic xử lý lỗi ---
     }
   };
 
@@ -62,9 +71,6 @@ const BillDetailScreen = ({ route, navigation }) => {
     }
   };
 
-  const generateQRContent = () => {
-    return `Hóa đơn #${id}\nMSSV: ${detail.user.TenDangNhap}\nTên: ${detail.user.Username}\nSố tiền: ${Number(detail.total).toLocaleString()}đ`;
-  };
 
   if (!detail) return <Text style={{ padding: 16 }}>Đang tải...</Text>;
 
@@ -89,6 +95,7 @@ const BillDetailScreen = ({ route, navigation }) => {
         <Text>Mã số sinh viên: <Text style={styles.bold}>{detail.user.TenDangNhap}</Text></Text>
         <Text>Tên sinh viên: <Text style={styles.bold}>{detail.user.Username}</Text></Text>
         <Text>Địa chỉ: <Text style={styles.bold}>{detail.user.DiaChi}</Text></Text>
+        <Text>Phòng: <Text style={styles.bold}>{detail.user.MaPhong}</Text></Text>
       </View>
 
       <View style={styles.card}>
@@ -118,8 +125,8 @@ const BillDetailScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-
-      {!showQRCode && detail.TrangThai !== 'Đã thanh toán' && (
+      
+      {!showQRCode && detail.user.TrangThai !== 'Đã thanh toán' && (
         <TouchableOpacity
           style={styles.button}
           onPress={handleShowQr}
@@ -128,14 +135,7 @@ const BillDetailScreen = ({ route, navigation }) => {
         </TouchableOpacity>
       )}
 
-      {detail.TrangThai === 'Đã thanh toán' && (
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#4CAF50' }]}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.buttonText}>Quay lại</Text>
-        </TouchableOpacity>
-      )}
+
     </ScrollView>
   );
 };

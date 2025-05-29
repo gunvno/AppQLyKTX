@@ -14,7 +14,7 @@ exports.getBillsByUsername = (username, callback) => {
 // Lấy thông tin người dùng liên quan tới hóa đơn
 exports.getUserInfoByBillId = (billId, callback) => {
   const query = `
-    SELECT u.TenDangNhap, u.Username, u.DiaChi
+    SELECT u.TenDangNhap, u.Username, u.DiaChi, hd.TrangThai,hd.MaPhong
     FROM user u
     JOIN hopdong h ON h.TenDangNhap = u.TenDangNhap
     JOIN hoadon hd ON hd.MaPhong = h.MaPhong
@@ -53,11 +53,11 @@ exports.updateBillStatus = (MaHD, TrangThai, callback) => {
 
 exports.getBillsByUserId = (username, callback) => {
   const query = `
-    SELECT hd.MaHD, hd.NgayXuatHD, hd.TongTien, hd.TrangThai
-    FROM hoadon hd
-    JOIN hopdong h ON hd.MaPhong = h.MaPhong
-    WHERE h.TenDangNhap = ?
-    ORDER BY hd.NgayXuatHD DESC
+    SELECT DISTINCT hd.MaHD, hd.NgayXuatHD, hd.TongTien, hd.TrangThai
+FROM hoadon hd
+JOIN hopdong h ON hd.MaPhong = h.MaPhong
+WHERE h.TenDangNhap = ?
+ORDER BY hd.NgayXuatHD DESC;
   `;
   db.query(query, [username], callback);
 };

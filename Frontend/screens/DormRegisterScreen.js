@@ -77,6 +77,8 @@ export default function DormRegisterScreen({ route, navigation }) {
           if (SoLuong < maxPeople) {
             console.log('Da den day');
             await handleRegister() 
+            Alert.alert('Thông báo', 'Đăng ký thành công');
+            return true;
           } else {
             Alert.alert('Thông báo', 'Phòng đã đầy, không thể đăng ký');
             return null;
@@ -287,8 +289,8 @@ function toMySQLDateOnly(dateStr) {
               onValueChange={(itemValue) =>
                 setRegistrationInfo({ ...registrationInfo, Nam: itemValue })
               }>
-              <Picker.Item label="2025" value="2025" />
               <Picker.Item label="2026" value="2026" />
+              <Picker.Item label="2027" value="2027" />
             </Picker>
           </View>
 

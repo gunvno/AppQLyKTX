@@ -36,6 +36,14 @@ const HomeBillScreen = () => {
             Alert.alert('Lỗi server', 'Không thể kết nối đến server');
           }
         };
+useEffect(() => {
+  const unsubscribe = navigation.addListener('focus', () => {
+    // Làm mới danh sách hóa đơn
+    getBillsByUsername(username).then(setBills).catch(console.error);
+  });
+
+  return unsubscribe; // Cleanup listener khi component unmount
+}, [navigation, username]);
   useEffect(() => {
     if (username) {
       getBillsByUsername(username)
@@ -97,7 +105,12 @@ const HomeBillScreen = () => {
                 style={styles.checkButton}
                 onPress={() => {
                   const { month, year } = getMonthAndYear(unpaidBill.NgayXuatHD);
-                  navigation.navigate('BillDetail', { id: unpaidBill.MaHD,month,year })
+                  navigation.navigate('BillDetail', { id: unpaidBill.MaHD,month,year,
+                    onPaymentSuccess: () => {
+        // Làm mới danh sách hóa đơn
+        getBillsByUsername(username).then(setBills).catch(console.error);
+      },
+                   })
                 }}
               >
                 <Text style={styles.checkText}>Kiểm tra</Text>
@@ -119,7 +132,12 @@ const HomeBillScreen = () => {
             key={item.MaHD}
             onPress={() => {
               const { month, year } = getMonthAndYear(item.NgayXuatHD);
-              navigation.navigate('BillDetail', { id: item.MaHD,month, year})
+              navigation.navigate('BillDetail', { id: item.MaHD,month, year,
+                onPaymentSuccess: () => {
+        // Làm mới danh sách hóa đơn
+        getBillsByUsername(username).then(setBills).catch(console.error);
+      },
+              })
           }}
           >
             {renderBillItem(item)}

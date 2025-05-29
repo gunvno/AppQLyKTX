@@ -64,10 +64,11 @@ export const getContractByContractId = async (id) => {
 }
 export const updatePassword = async (id, newPassword) => {
   try {
+    console.log('Sending updatePassword request for id:', id, 'with password:', newPassword);
     const response = await fetch(`${BASE_URL}/users/updatePassword/${id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: newPassword }),
+      body: JSON.stringify({newPassword }),
     });
     const data = await response.json();
     return data;

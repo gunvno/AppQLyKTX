@@ -92,9 +92,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#2E6CF6',
     padding: 16,
-    marginTop: 40, // Adjust for status bar
   },
-  headerTitle: { color: '#fff', fontSize: 18, marginLeft: 16 },
+  header: {paddingTop:50, backgroundColor: '#2E6CF6', padding: 16,flexDirection: 'row', alignItems: 'center' },
+  headerTitle: { color: '#fff', fontSize: 20, marginLeft: 16,fontWeight: 'bold' },
   filterRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',

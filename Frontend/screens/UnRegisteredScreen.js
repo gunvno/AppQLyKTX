@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Nếu dùng Expo
@@ -25,7 +25,7 @@ export default function UnRegisteredScreen({ navigation, route }) {
         
         <TouchableOpacity 
           style={styles.topButton} 
-          onPress={() => navigation.navigate('Request', { user })}
+          onPress={() => Alert.alert('Thông báo', 'Bạn cần đăng kí ở ký túc xá')}
         >
           <Ionicons name="create-outline" size={24} color="#2962FF" style={styles.topButtonIcon} />
           <Text style={styles.topButtonText}>Yêu cầu</Text>
