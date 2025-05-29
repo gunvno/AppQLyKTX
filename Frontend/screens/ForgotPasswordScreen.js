@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { sendPassword } from '../api/api'; // Adjust the import path as necessary
 
 export default function ForgotPasswordScreen({ navigation }) {
@@ -9,7 +9,7 @@ export default function ForgotPasswordScreen({ navigation }) {
   const handleForgotPassword = async () => {
     setLoading(true);
     try {
-      const data = await sendPassword(username); // data đã là object
+      const data = await sendPassword(username);
       if (data.success) {
         Alert.alert('Thành công', 'Mật khẩu đã được gửi về email của bạn!');
         navigation.navigate('Login');
@@ -24,42 +24,83 @@ export default function ForgotPasswordScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Quên mật khẩu</Text>
+      {/* Hình ảnh minh họa */}
+      <Image
+        source={require('../../assets/image.png')} // Thay bằng đường dẫn ảnh minh họa của bạn
+        style={styles.image}
+        resizeMode="contain"
+      />
+
+      {/* Tiêu đề */}
+      <Text style={styles.title}>GỬI MẬT KHẨU</Text>
+
+      {/* Input */}
       <TextInput
         style={styles.input}
-        placeholder="Nhập tên đăng nhập"
+        placeholder="Nhập mã số sinh viên"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
       />
-  <TouchableOpacity
-    style={[styles.button, loading && styles.buttonDisabled]}
-    onPress={handleForgotPassword}
-    disabled={loading}
-    >
-    <Text style={styles.buttonText}>
-      {loading ? "Đang xử lý..." : "Gửi mật khẩu"}
-    </Text>
-  </TouchableOpacity>
-  <TouchableOpacity
-  style={styles.buttonBack}
-  onPress={() => navigation.navigate('Login')}>
-    <Text style={styles.buttonText}>Quay lại</Text>
-  </TouchableOpacity>
+
+      {/* Nút gửi mật khẩu */}
+      <TouchableOpacity
+        style={[styles.button, loading && styles.buttonDisabled]}
+        onPress={handleForgotPassword}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? 'Đang xử lý...' : 'Gửi mật khẩu'}
+        </Text>
+      </TouchableOpacity>
+
+      {/* Nút quay lại */}
+      <TouchableOpacity
+        style={styles.buttonBack}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text style={styles.buttonText}>Quay lại</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, marginBottom: 20, textAlign: 'center' },
-  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 20, borderRadius: 5 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#F5F5F5',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#1976D2',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
   button: {
+    width: '100%',
     backgroundColor: '#1976D2',
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 10,
+    marginBottom: 10,
   },
   buttonDisabled: {
     backgroundColor: '#90caf9',
@@ -68,12 +109,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    letterSpacing: 1,
   },
   buttonBack: {
-    marginTop: 10,
-    backgroundColor: '#1976D2',
-    paddingVertical: 12,
+    width: '100%',
+    backgroundColor: '#E3F2FD',
+    paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
   },

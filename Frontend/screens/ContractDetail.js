@@ -192,13 +192,14 @@ const styles = StyleSheet.create({
 
 
 backButton: {
-  marginRight: 12,
+  paddingLeft: 12,
 },
 
 headerText: {
-  fontSize: 18,
+  fontSize: 20,
   color: '#fff',
   fontWeight: 'bold',
+  paddingLeft:12,
 },
 
 });

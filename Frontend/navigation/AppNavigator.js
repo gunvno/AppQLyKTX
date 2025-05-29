@@ -22,6 +22,7 @@ import HomeBillScreen from '../screens/HomeBillScreen';
 import BillDetailScreen from '../screens/BillDetailScreen';
 import AllBillScreen from '../screens/AllBillScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
+import NoiQuyScreen from '../screens/NoiQuyScreen';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -49,6 +50,7 @@ export default function AppNavigator() {
       <Stack.Screen name="BillDetail" component={BillDetailScreen} options={{ headerShown: false }} />
       <Stack.Screen name="AllBill" component={AllBillScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="NoiQuy" component={NoiQuyScreen} options={{ headerShown: false }} />
       {/* Add other screens here */}
     </Stack.Navigator>
   );

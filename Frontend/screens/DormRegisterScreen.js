@@ -358,6 +358,13 @@ function toMySQLDateOnly(dateStr) {
             />
             <Text>Tôi đã đọc và đồng ý với các điều khoản nội quy ký túc xá</Text>
           </View>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('NoiQuy')}>
+              <Text style={{ color: '#007bff', textDecorationLine: 'underline', paddingLeft: 35 }}>
+                Xem nội quy ký túc xá
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <TouchableOpacity style={styles.registerButton} onPress={KiemTraSoLuongNguoi}>
@@ -435,13 +442,14 @@ const styles = StyleSheet.create({
 },
 
 backButton: {
-  marginRight: 12,
+  paddingLeft: 12,
 },
 
 headerText: {
   fontSize: 20,
   color: '#fff',
   fontWeight: 'bold',
+  marginLeft: 12,
 },
 
 });

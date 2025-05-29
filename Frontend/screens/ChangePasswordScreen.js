@@ -140,6 +140,7 @@ headerText: {
   color: '#fff',
   fontSize: 20,
   fontWeight: 'bold',
+  paddingLeft:12,
 },
 backbutton: {
   marginRight: 12,

@@ -56,13 +56,13 @@ export default function RegisteredScreen({ route, navigation }) {
 
       {/* Nút chức năng */}
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Contracts', {user})}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Contracts', { user })}>
           <Text style={styles.icon}>📋</Text>
-          <Text>Hợp đồng</Text>
+          <Text style={styles.buttonText}>Hợp đồng</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Request', {user})}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Request', { user })}>
           <Text style={styles.icon}>📝</Text>
-          <Text>Yêu cầu</Text>
+          <Text style={styles.buttonText}>Yêu cầu</Text>
         </TouchableOpacity>
       </View>
 
@@ -86,13 +86,13 @@ export default function RegisteredScreen({ route, navigation }) {
 
       {/* Thanh điều hướng */}
       <View style={styles.navBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('Registered', {user})}>
+        <TouchableOpacity onPress={() => navigation.navigate('Registered', { user })}>
           <Text style={styles.navIcon}>🏠</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('HomeBill', {user})}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeBill', { user })}>
           <Text style={styles.navIcon}>📄</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile', {user})}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile', { user })}>
           <Text style={styles.navIcon}>👤</Text>
         </TouchableOpacity>
       </View>
@@ -105,12 +105,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#F5F5F5',
   },
   card: {
     marginTop: 70,
-    backgroundColor: '#fff',
-    padding: 15,
+    backgroundColor: '#FFFFFF',
+    padding: 20,
     borderRadius: 15,
     shadowColor: '#000',
     shadowOpacity: 0.1,
@@ -121,15 +121,8 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 18,
     marginBottom: 10,
-  },
-  statusRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  capacity: {
-    fontWeight: 'bold',
     color: '#1976D2',
   },
   buttonRow: {
@@ -139,18 +132,29 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     alignItems: 'center',
+    backgroundColor: '#E3F2FD',
+    padding: 10,
+    borderRadius: 10,
+    width: 100,
   },
   icon: {
     fontSize: 30,
     marginBottom: 5,
   },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#1976D2',
+  },
   sectionTitle: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginTop: 70,
+    marginTop: 30,
+    marginBottom: 10,
+    color: '#424242',
   },
   paymentBox: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     padding: 15,
     borderRadius: 15,
     shadowColor: '#000',
@@ -165,9 +169,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   iconCircle: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -175,24 +179,29 @@ const styles = StyleSheet.create({
   paymentName: {
     flex: 1,
     fontWeight: '500',
+    fontSize: 14,
+    color: '#424242',
   },
   paymentValue: {
     fontWeight: 'bold',
+    fontSize: 14,
+    color: '#1976D2',
   },
   navBar: {
-  flexDirection: 'row',
-  justifyContent: 'space-around',
-  paddingVertical: 10,
-  borderTopWidth: 1,
-  borderTopColor: '#ccc',
-  backgroundColor: '#fff',
-  position: 'absolute',
-  bottom: 10,
-  left: 0,
-  right: 0,
-},
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
   navIcon: {
     fontSize: 26,
+    color: '#1976D2',
   },
   infoContainer: {
     flexDirection: 'row',
@@ -205,5 +214,6 @@ const styles = StyleSheet.create({
   infoText: {
     marginBottom: 5,
     fontSize: 14,
+    color: '#424242',
   },
 });
